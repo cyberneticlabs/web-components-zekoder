@@ -41,11 +41,11 @@ import ZekHeading from "../heading-block/HeadingBlock.vue";
 import ZekText from "../text-block/TextBlock.vue"
 import ZekInput from '../input-field/InputField.vue'
 export default {
-    components: { 
-        ZekButton, 
-        ZekHeading, 
-        ZekText, 
-        ZekInput 
+    components: {
+        ZekButton,
+        ZekHeading,
+        ZekText,
+        ZekInput
     },
     name: "ZekForm",
     props: {
@@ -152,7 +152,9 @@ export default {
             'toggle-button': 'toggle-button',
             'dropdown': 'dropdown',
             'countries-list': 'countries-list',
-            'file-upload': 'file-upload'
+            'file-upload': 'file-upload',
+            'label': 'label',
+            'line': 'line',
         }
         return {
             content: () => {
@@ -160,6 +162,24 @@ export default {
                 this.inputs.forEach(input => {
                     if(input.type == 'captcha') {
                         this.containsCaptcha = true;
+                    }
+                    if(input.type == 'label') {
+                        columns.push({
+                            columnWidth: input.columnWidth || 12,
+                            content: {
+                                component: 'text',
+                                data: input,
+                            }
+                        })
+                    }
+                    if(input.type == 'line') {
+                        columns.push({
+                            columnWidth: input.columnWidth || 12,
+                            content: {
+                                component: 'html',
+                                data: input,
+                            }
+                        })
                     }
                     columns.push({
                         columnWidth: input.columnWidth || 12,
