@@ -154,8 +154,6 @@ Primary.args = {
 
     }
   ],
-  sectionLabel: "balbla",
-  formSection: "lol",
   submitButton: 'Proceed', //for string it is button label, for object it should be {show:true, label:'Submit', styleObj: {}}
   cancelButton: {
       label: "Discard",

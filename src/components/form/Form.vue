@@ -168,7 +168,7 @@ export default {
                             columnWidth: input.columnWidth || 12,
                             content: {
                                 component: 'text',
-                                data: input,
+                                data: input || {type: 'label', text: "label"},
                             }
                         })
                     }
@@ -177,7 +177,7 @@ export default {
                             columnWidth: input.columnWidth || 12,
                             content: {
                                 component: 'html',
-                                data: input,
+                                data: input ||  { type: 'line', content: `<hr>`, styleObj: { color: "#000000"}},
                             }
                         })
                     }
