@@ -152,9 +152,7 @@ export default {
             'toggle-button': 'toggle-button',
             'dropdown': 'dropdown',
             'countries-list': 'countries-list',
-            'file-upload': 'file-upload',
-            'label': 'label',
-            'line': 'line',
+            'file-upload': 'file-upload'
         }
         return {
             content: () => {
@@ -162,24 +160,6 @@ export default {
                 this.inputs.forEach(input => {
                     if(input.type == 'captcha') {
                         this.containsCaptcha = true;
-                    }
-                    if(input.type == 'label') {
-                        columns.push({
-                            columnWidth: input.columnWidth || 12,
-                            content: {
-                                component: 'text',
-                                data: input || {type: 'label', text: "label"},
-                            }
-                        })
-                    }
-                    if(input.type == 'line') {
-                        columns.push({
-                            columnWidth: input.columnWidth || 12,
-                            content: {
-                                component: 'html',
-                                data: input ||  { type: 'line', content: `<hr>`, styleObj: { color: "#000000"}},
-                            }
-                        })
                     }
                     columns.push({
                         columnWidth: input.columnWidth || 12,
