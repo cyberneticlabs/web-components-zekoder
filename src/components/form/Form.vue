@@ -42,10 +42,10 @@ import ZekText from "../text-block/TextBlock.vue"
 import ZekInput from '../input-field/InputField.vue'
 export default {
     components: {
-        ZekButton,
-        ZekHeading,
-        ZekText,
-        ZekInput
+        ZekButton, 
+        ZekHeading, 
+        ZekText, 
+        ZekInput 
     },
     name: "ZekForm",
     props: {
