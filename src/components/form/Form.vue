@@ -41,7 +41,7 @@ import ZekHeading from "../heading-block/HeadingBlock.vue";
 import ZekText from "../text-block/TextBlock.vue"
 import ZekInput from '../input-field/InputField.vue'
 export default {
-    components: {
+    components: { 
         ZekButton, 
         ZekHeading, 
         ZekText, 
