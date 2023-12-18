@@ -49,6 +49,8 @@ const ZekXYChart = () => import(/* webpackChunkName: "zek-xy-chart" */ './compon
 const ZekPieChart = () => import(/* webpackChunkName: "zek-pie-chart" */ './components/charts/PieChart.vue');
 const ZekRadialChart = () => import(/* webpackChunkName: "zek-radial-chart" */ './components/charts/RadialChart.vue');
 const ZekGanttChart = () => import(/* webpackChunkName: "zek-gantt-chart" */ './components/charts/GanttChart.vue');
+const ZekBreadcrumb = () => import(/* webpackChunkName: "zek-breadcrumb" */ './components/breadcrumb/Breadcrumb.vue');
+
 
 export {
     ZekButton,
@@ -94,5 +96,6 @@ export {
     ZekLoader,
     ZekDocViewer,
     ZekCodeEditor,
-    ZekGanttChart
+    ZekGanttChart,
+    ZekBreadcrumb
 }
