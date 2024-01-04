@@ -1,5 +1,5 @@
 <template>
-    <div :class="`zek-video video-container ${customClass}`" @click="$emit('onClick', $event)" v-on="customEvents">
+    <div ref="zekVideo" :class="`zek-video video-container ${customClass}`" @click="$emit('onClick', $event)" v-on="customEvents">
         <component :class="`video-overlay ${overlay.class}`" :style="overlay.style" v-if="overlay && showOverlay" :is="overlay.component"/>
         <video
             v-if="source == 'local'"
@@ -34,9 +34,18 @@ import Player from "@vimeo/player";
 export default {
     name: "ZekVideo",
     props: {
-        height: [Number, String],
-        width: [Number, String],
-        source: String, //local, youtube, dailymotion, vimeo
+        height: {
+            type: [String, Number],
+            default: ""
+        },
+        width: {
+            type: [String, Number],
+            default: ""
+        },
+        source: {  //local, youtube, dailymotion, vimeo
+            type: String,
+            default: ""
+        },
         url: {
             type: String,
             required: true
@@ -45,12 +54,30 @@ export default {
             type: String,
             default: "zek-player"
         },
-        isMuted: Boolean,
-        loop: Boolean,
-        showControls: Boolean,
-        autoplay: Boolean,
-        styleObj: Object,
-        play: Boolean,
+        isMuted: {
+            type: Boolean,
+            default: false
+        },
+        loop: {
+            type: Boolean,
+            default: false
+        },
+        showControls: {
+            type: Boolean,
+            default: false
+        },
+        autoplay: {
+            type: Boolean,
+            default: false
+        },
+        styleObj:{
+            type: Object,
+            default: () => ({})
+        },
+        play: {
+            type: Boolean,
+            default: false
+        },
         customClass: {
             type: String,
             default: ""
@@ -59,8 +86,14 @@ export default {
             type: Boolean,
             default: true
         },
-        overlay: Object,
-        customEvents: Object
+        overlay: {
+            type: Object,
+            default: () => ({})
+        },
+        customEvents: {
+            type: Object,
+            default: () => ({})
+        },
     },
     data() {
         return {

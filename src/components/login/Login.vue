@@ -1,5 +1,5 @@
 <template>
-    <div class="row" :style="styleObj">
+    <div ref="zekLogin" class="row" :style="styleObj">
         <div class="col">
             <template v-if="socialIcons && socialIcons.length">
                 <div class="social-login">
@@ -53,22 +53,74 @@
     name: 'ZekLogin',
     components: { ZekForm },
     props: {
-        theme: String,
-        customClass: String,
-        email: Object,
-        password: Object,
-        showForgotLink: Boolean,
-        showRememberMe: Boolean,
-        rememberMe: Object,
-        forgotPassword: Object,
-        loginButton: [String, Object],
-        socialIcons: Array, // [{icon: '', image:'', label:''}]
-        image: Object,
-        webAuthConfig: Object,
-        firebaseConfig: Object,
-        url: String, //login endpoint url
-        orText: String,
-        styleObj: Object
+        theme: {
+            type: String,
+            default: ""
+        },
+        customClass: {
+            type: String,
+            default: ""
+        },
+        email: {
+            type: Object,
+            default: () => ({})
+        },
+        password: {
+            type: Object,
+            default: () => ({})
+        },
+        showForgotLink: {
+            type: Boolean,
+            default: false
+        },
+        showRememberMe: {
+            type: Boolean,
+            default: false
+        },
+        rememberMe: {
+            type: Object,
+            default: () => ({})
+        },
+        forgotPassword: {
+            type: Object,
+            default: () => ({})
+        },
+        loginButton: {
+            type: [String, Object],
+            default: ""
+        },
+        socialIcons: {   // [{icon: '', image:'', label:''}]
+            type: Array,
+            default: () => []
+        },
+        image: {
+            type: Object,
+            default: () => ({})
+        },
+        webAuthConfig: {
+            type: Object,
+            default: () => ({})
+        },
+        firebaseConfig: {
+            type: Object,
+            default: () => ({})
+        },
+        url: {  //login endpoint url
+            type: String,
+            default: ""
+        },
+        orText: {
+            type: String,
+            default: ""
+        },
+        styleObj: {
+            type: Object,
+            default: () => ({})
+        },
+        id: {
+            type: [String, Number],
+            default: ""
+        },
     },
     data() {
         const data = {

@@ -4,6 +4,7 @@
         :style="styleObject"
         :class="error ? 'zek-invalid-field' : customClass ? customClass + '-container' : 'zek-textarea-container'"
         @click="$emit('onClick', $event)"
+        ref="zekTextarea"
     >
         <span v-if="label" :style="label.style">
             <span v-html="label.html || label.text || label"></span>
@@ -64,7 +65,8 @@ export default {
             default: () => {}
         },
         label: {
-            type: [Object, String]
+            type: [Object, String],
+            default: ""
         },
         customClass: {
             type: String,
@@ -114,9 +116,13 @@ export default {
             default: false
         },
         form: {
-            type: String
+            type: String,
+            default: ""
         },
-        error: String,
+        error: {
+            type: String,
+            default: ""
+        },
         limitIndicatorStyle: {
             type: Object,
             default: () => ({})

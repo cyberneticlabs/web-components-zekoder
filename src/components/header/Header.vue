@@ -1,5 +1,5 @@
 <template>
-    <header id="zek-header" class="zek-header-wrapper" :style="styleObj">
+    <header ref="zekHeader" id="zek-header" class="zek-header-wrapper" :style="styleObj" :class="customClass">
         <i
             v-if="sidebarButton"
             class="fa fa-bars sidebar"
@@ -73,7 +73,8 @@ export default {
             })
         },
         text: {
-            type: String, Object
+            type: String, Object,
+            default: ""
         },
         sidebarButton: {
             type: Boolean,
@@ -87,10 +88,12 @@ export default {
             })
         },
         menus: {
-            type: Array
+            type: Array,
+            default: () => []
         },
         styleObj: {
-            type: Object
+            type: Object,
+            default: () => ({})
         },
         dropdownProps: {
             type: Object,
@@ -115,11 +118,21 @@ export default {
             })
         },
         userInfo: {
-            type: Object
+            type: Object,
+            default: () => ({})
         },
         langDropdown: {
-            type: Object
-        }
+            type: Object,
+            default: () => ({})
+        },
+        customClass: {
+            type: String,
+            default: ""
+        },
+        id: {
+            type: [String, Number],
+            default: ""
+        },
     },
     methods: {
         onSelect(selected) {

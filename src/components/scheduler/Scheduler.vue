@@ -1,6 +1,6 @@
 <template>
     <v-app>
-        <div class="zek-scheduler" :style="{ height: height, width: width, ...styleObject }" @click="$emit('onClick', $event)">
+        <div ref="zekScheduler" class="zek-scheduler" :style="{ height: height, width: width, ...styleObject }" @click="$emit('onClick', $event)">
             <v-toolbar v-if="showToolbar" flat :class="toolbarClass">
                 <v-toolbar-title class="toolbar-title pr-4">
                     {{ title }}
@@ -126,7 +126,11 @@ export default {
         extraEvents: {
             type: Object,
             default: () => ({})
-        }
+        },
+        id: {
+            type: [String, Number],
+            default: ""
+        },
     },
     mounted() {
         this.$refs.calendar.checkChange();

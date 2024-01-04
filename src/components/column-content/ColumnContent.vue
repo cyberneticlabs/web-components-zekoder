@@ -1,6 +1,7 @@
 <template>
     <div
         class="column-content-wrapper"
+        ref="zekColumnContent"
         v-if="column && ((column.rows && column.rows.length) || column.content)"
         v-show="column.condition != undefined ? column.condition : true"
         :key="key"
@@ -67,7 +68,11 @@
 export default {
     name: "ZekColumnContent",
     props: {
-        column: Object,
+        column: {
+            //column can have rows or a component. Each row must have columns, columns can have more rows. Component can only be inside a column
+            type: Object,
+            default: () => ({})
+        },
         customClass: {
             type: String,
             default: ""
@@ -77,6 +82,10 @@ export default {
             default: () => {
                 return {};
             }
+        },
+        id: {
+            type: [String, Number],
+            default: ""
         }
     },
     data() {

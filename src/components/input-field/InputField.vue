@@ -3,6 +3,7 @@
       @click="$emit('onClick', $event)"
       :class="error ? 'zek-invalid-field' : customClass ? customClass + '-container' : 'input-field-container'"
       :style="styleObject"
+      ref="zekInput"
   >
       <i
           v-if="icon && iconSettings.position == 'left'"
@@ -28,6 +29,7 @@
           v-if="inputType === 'datepicker'"
           v-model="value"
           v-bind="$props"
+          v-on="extraEvents"
           :min="minMaxValue.min"
           :max="minMaxValue.max"
           :class="customClass"
@@ -55,6 +57,7 @@
           :title="title"
           :style="inputStyle"
           v-on="preventSpaces ? { keypress: preventSpaceKey } : {}"
+          v-bind="extraProps"
           @keyup="onKeyUp"
           @change="onInput"
           @input="input"
@@ -90,139 +93,155 @@
 
 <script>
 export default {
-  name: "ZekInput",
-  props: {
-      type: {
-          type: String,
-          default: "short-text"
-      },
-      assignedValue: {
-        type: String,
-      },
-      inputType: {
-          type: String,
-          default: "text"
-      },
-      label: {
-          type: [Object, String]
-      },
-      customClass: {
-          type: String,
-          default: ""
-      },
-      inputStyle: {
-          type: Object
-      },
-      required: {
-          type: Boolean,
-          default: false
-      },
-      disabled: {
-          type: Boolean,
-          default: false
-      },
-      error: {
-          type: String,
-          default: ""
-      },
-      icon: {
-          type: String,
-          default: ""
-      },
-      iconSettings: {
-          type: Object,
-          default: () => ({
-              position: "left",
-              clickable: false,
-              style: {
-                  margin: "0 0.5rem"
-              }
-          })
-      },
-      showPasswordButton: {
-          type: String,
-          default: ""
-      },
-      pattern: {
-          type: String,
-          default: ""
-      },
-      initialValue: {
-          type: [String, Number, Boolean],
-          default: ""
-      },
-      minMaxValue: {
-          type: Object,
-          default: () => ({
-              min: "",
-              max: ""
-          })
-      },
-      styleObject: {
-          type: Object,
-          default: () => ({
-              position: "relative"
-          })
-      },
-      name: {
-          type: String,
-          default: ""
-      },
-      id: {
-          type: String,
-          default: ""
-      },
-      placeholder: {
-          type: String,
-          default: ""
-      },
-      readonly: {
-          type: Boolean,
-          default: false
-      },
-      autocomplete: {
-          type: String,
-          default: "on"
-      },
-      hint: {
-          type: String,
-      },
-      title: String,
-      preventSpaces: Boolean
-  },
-  data() {
-      return {
-          actualType: this.inputType,
-          value: this.initialValue || ""
-      };
-  },
-  methods: {
-      input(event) {
-          this.$emit("input", { id: this.id, value: this.value });
-      },
-      onInput(event) {
-          this.$emit("onInput", this.inputType === "datepicker" ? { target: { value: event } } : event);
-      },
-      preventSpaceKey(event) {
-          if (event.keyCode == 32) {
-              event.preventDefault();
-          }
-      },
-      onKeyUp(event) {
-          this.$emit("onKeyUp", event);
-      },
-      iconClicked(event) {
-          this.iconSettings.clickable ? this.$emit("iconClicked", event) : "";
-      },
-      hintClicked(event) {
-          this.$emit("hintClicked", event);
-      }
-  },
-  watch: {
-      initialValue(val) {
-          this.value = val;
-      }
-  }
+    name: "ZekInput",
+    props: {
+        type: {
+            type: String,
+            default: "short-text"
+        },
+        inputType: {
+            type: String,
+            default: "text"
+        },
+        label: {
+            type: [Object, String]
+        },
+        customClass: {
+            type: String,
+            default: ""
+        },
+        inputStyle: {
+            type: Object
+        },
+        required: {
+            type: Boolean,
+            default: false
+        },
+        disabled: {
+            type: Boolean,
+            default: false
+        },
+        error: {
+            type: String,
+            default: ""
+        },
+        icon: {
+            type: String,
+            default: ""
+        },
+        iconSettings: {
+            type: Object,
+            default: () => ({
+                position: "left",
+                clickable: false,
+                style: {
+                    margin: "0 0.5rem"
+                }
+            })
+        },
+        showPasswordButton: {
+            type: String,
+            default: ""
+        },
+        pattern: {
+            type: String,
+            default: ""
+        },
+        initialValue: {
+            type: [String, Number, Boolean],
+            default: ""
+        },
+        minMaxValue: {
+            type: Object,
+            default: () => ({
+                min: "",
+                max: ""
+            })
+        },
+        styleObject: {
+            type: Object,
+            default: () => ({
+                position: "relative"
+            })
+        },
+        name: {
+            type: String,
+            default: ""
+        },
+        id: {
+            type: String,
+            default: ""
+        },
+        placeholder: {
+            type: String,
+            default: ""
+        },
+        readonly: {
+            type: Boolean,
+            default: false
+        },
+        autocomplete: {
+            type: String,
+            default: "on"
+        },
+        extraProps: {
+            type: Object,
+            default: () => ({})
+        },
+        extraEvents: {
+            type: Object,
+            default: () => ({})
+        },
+        title: {
+            type: String,
+            default: ""
+        },
+        preventSpaces: {
+            type: Boolean,
+            default: false
+        },
+        assignedValue: {
+            type: String,
+            default: ""
+        },
+        hint: {
+            type: String,
+            default: ""
+        },
+    },
+    data() {
+        return {
+            actualType: this.inputType,
+            value: this.initialValue || ""
+        };
+    },
+    methods: {
+        input(event) {
+            this.$emit("input", { id: this.id, value: this.value });
+        },
+        onInput(event) {
+            this.$emit("onInput", this.inputType === "datepicker" ? { target: { value: event } } : event);
+        },
+        preventSpaceKey(event) {
+            if (event.keyCode == 32) {
+                event.preventDefault();
+            }
+        },
+        onKeyUp(event) {
+            this.$emit("onKeyUp", event);
+        },
+        iconClicked(event) {
+            this.iconSettings.clickable ? this.$emit("iconClicked", event) : "";
+        },
+        hintClicked(event) {
+        this.$emit("hintClicked", event);
+        }
+    },
+    watch: {
+        initialValue(val) {
+            this.value = val;
+        }
+    }
 };
 </script>
 

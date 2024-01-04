@@ -1,5 +1,5 @@
 <template>
-    <p @click="$emit('onClick', $event)" :style="styleObj">
+    <p ref="zekText" @click="$emit('onClick', $event)" :style="styleObj" :class="customClass">
         <span v-if="value"> {{value}} </span>
     </p>
 
@@ -10,10 +10,30 @@
   export default {
     name: 'ZekText',
     props: {
-        text: String,
-        lineBreaks: Number,
-        styleObj: Object,
-        dataField: String
+        text: {
+            type: String,
+            default: ""
+        },
+        lineBreaks: {
+            type: Number,
+            default: 0
+        },
+        styleObj: {
+            type: Object,
+            default: () => ({})
+        },
+        dataField: {
+            type: String,
+            default: ""
+        },
+         customClass: {
+            type: String,
+            default: ""
+        },
+        id: {
+            type: [String, Number],
+            default: ""
+        },
     },
     data() {
         return{}

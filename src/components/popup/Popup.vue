@@ -1,8 +1,13 @@
 <template>
     <transition>
-        <div v-if="showForm" class="zek-popup-container" :style="getPositionStyle()">
+        <div ref="zekPopup" v-if="showForm" class="zek-popup-container" :style="getPositionStyle()">
             <div :class="`zek-popup p-4 ${customClass}`" :style="styleObj">
-                <div v-if="showCloseIcon" class="zek-popup-close-button" :class="closeIconPosition == 'left' ? 'left' : ''" @click="$emit('cancel')">
+                <div
+                    v-if="showCloseIcon"
+                    class="zek-popup-close-button"
+                    :class="closeIconPosition == 'left' ? 'left' : ''"
+                    @click="$emit('cancel')"
+                >
                     <i class="fas fa-times"></i>
                 </div>
                 <template>
@@ -26,7 +31,10 @@ export default {
     name: "ZekPopup",
     components: { ZekForm },
     props: {
-        show: Boolean,
+        show: {
+            type: Boolean,
+            default: false
+        },
         width: {
             type: String,
             default: "500px"
@@ -39,13 +47,22 @@ export default {
             type: String,
             default: "center"
         },
-        formProps: Object,
+        formProps: {
+            type: Object,
+            default: () => ({})
+        },
         customClass: {
             type: String,
             default: ""
         },
-        styleObj: Object,
-        content: Object,
+        styleObj: {
+            type: Object,
+            default: () => ({})
+        },
+        content: {
+            type: Object,
+            default: () => ({})
+        },
         dimBackground: {
             type: Boolean,
             default: true
@@ -57,6 +74,10 @@ export default {
         closeIconPosition: {
             type: String,
             default: "right"
+        },
+        id: {
+            type: [String, Number],
+            default: ""
         }
     },
     data() {
@@ -98,9 +119,9 @@ export default {
         show: function(newVal) {
             this.showForm = newVal;
             if (newVal) {
-                document.body.classList.add('popup-open');
+                document.body.classList.add("popup-open");
             } else {
-                document.body.classList.remove('popup-open');
+                document.body.classList.remove("popup-open");
             }
         }
     }

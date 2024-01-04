@@ -6,11 +6,13 @@
         :max="max"
         v-model="value"
         :class="customClass"
+        :style="styleObj"
         :disabled="disabled"
         :readonly="readonly"
         :date-disabled-fn="disabledDatesBS"
         v-bind="extraProps"
         v-on="extraEvents"
+        ref="zekCalendar"
     />
     <v-date-picker
         v-else
@@ -20,6 +22,7 @@
         :type="type"
         v-model="value"
         :class="customClass"
+        :style="styleObj"
         :disabled="disabled"
         :readonly="readonly"
         :allowed-dates="disabledDatesMUI"
@@ -27,6 +30,7 @@
         @input="onChange"
         v-bind="extraProps"
         v-on="extraEvents"
+        ref="zekCalendar"
     />
 </div>
 </template>
@@ -35,8 +39,17 @@
 export default {
     name: "ZekCalendar",
     props: {
+        id: {
+            type: String,
+            default: ""
+        },
+         styleObj: {
+            type: Object,
+            default: () => ({})
+        },
         color: {
-            type: String
+            type: String,
+            default: ""
         },
         showHeader: {
             type: Boolean,
@@ -59,10 +72,12 @@ export default {
             default: false
         },
         min: {
-            type: String
+            type: String,
+            default: ""
         },
         max: {
-            type: String
+            type: String,
+            default: ""
         },
         customClass: {
             type: String,

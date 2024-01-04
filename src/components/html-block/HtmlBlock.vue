@@ -1,6 +1,6 @@
 <template>
 
-    <div :class="cssClass" :style="styleObj" v-html="cleanHtml" @click="$emit('onClick', $event)"></div>
+    <div ref="zekHtml" :class="cssClass" :style="styleObj" v-html="cleanHtml" @click="$emit('onClick', $event)"></div>
 
 </template>
 
@@ -10,9 +10,22 @@
   export default {
     name: 'ZekHtml',
     props: {
-        content: String,
-        cssClass: String,
-        styleObj: Object
+        content: {
+            type: String,
+            default: ""
+        },
+        cssClass: {
+            type: String,
+            default: ""
+        },
+        styleObj: {
+            type: Object,
+            default: () => ({})
+        },
+        id: {
+            type: [String, Number],
+            default: ""
+        },
     },
     computed: {
         cleanHtml() {

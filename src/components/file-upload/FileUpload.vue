@@ -21,6 +21,7 @@
             :allowImagePreview="allowImagePreview"
             :allowRemove="!readonly"
             v-bind="extraProps"
+            v-on="extraEvents"
             @addfile="uploadFiles"
             @removefile="deleteFile"
             @activatefile="onClick"
@@ -55,7 +56,10 @@ export default {
         ZekButton
     },
     props: {
-        deleteButton: Object,
+        deleteButton: {
+            type: Object,
+            default: () => ({})
+        },
         width: {
             type: String,
             default: "100%"
@@ -65,12 +69,25 @@ export default {
             default: "100%"
         },
         label: {
-            type: [String, Object]
+            type: [String, Object],
+            default: ""
         },
-        required: Boolean,
-        multiple: Boolean,
-        dragDrop: Boolean,
-        uploadUrl: String,
+        required: {
+            type: Boolean,
+            default: false
+        },
+        multiple: {
+            type: Boolean,
+            default: false
+        },
+        dragDrop: {
+            type: Boolean,
+            default: false
+        },
+        uploadUrl: {
+            type: String,
+            default: ""
+        },
         fetchUrl: {
             type: String,
             default: ""
@@ -79,13 +96,22 @@ export default {
             type: String,
             default: "id"
         },
-        showLoader: Boolean,
+        showLoader: {
+            type: Boolean,
+            default: false
+        },
         customClass: {
             type: String,
             default: "",
         },
-        inputStyle: Object,
-        disabled: Boolean,
+        inputStyle: {
+            type: Object,
+            default: () => ({})
+        },
+        disabled: {
+            type: Boolean,
+            default: false
+        },
         styleObject: {
             type: Object,
             default: () => ({
@@ -132,6 +158,10 @@ export default {
         allowImagePreview: {
             type: Boolean,
             default: () => false
+        },
+        extraEvents: {
+            type: Object,
+            default: () => ({})
         }
     },
     data() {

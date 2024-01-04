@@ -1,5 +1,5 @@
 <template>
-    <div style="display:flex" :style="styleObject">
+    <div ref="zekScrollPicker" style="display:flex" :style="styleObject">
         <ScrollPicker
             v-if="type.includes('date')"
             :options="years"
@@ -142,6 +142,10 @@ export default {
             type: String,
             default: "1px solid #ccc"
         },
+        id: {
+            type: [String, Number],
+            default: ""
+        }
     },
     data() {
         return {

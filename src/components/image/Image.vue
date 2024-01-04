@@ -1,11 +1,11 @@
 <template>
-    <div class="image-container" @click="$emit('onClick', $event)">
-        <a 
-            v-if="targetUrl" 
-            :href="targetUrl" 
+    <div ref="zekImage" :class="customClass" class="image-container" @click="$emit('onClick', $event)">
+        <a
+            v-if="targetUrl"
+            :href="targetUrl"
             :target="'_'+(targetWindow || 'self')"
         >
-            <img 
+            <img
                 :src="imageUrl"
                 :alt="altText"
                 :style="styleObject"
@@ -14,7 +14,7 @@
                 @load="onLoad()"
             >
         </a>
-        <img 
+        <img
             v-else
             :src="imageUrl"
             :alt="altText"
@@ -32,21 +32,59 @@
 
 <script>
   import ZekText from '../text-block/TextBlock.vue'
-  
+
   export default {
     name: 'ZekImage',
     components: {ZekText},
     props: {
-        url: String,
-        imageColor: String,
-        altText: String,
-        targetUrl: String,
-        targetWindow: String,
-        width: String,
-        height: String,
-        hover: Object,
-        crop: Object,
-        styleObj: Object
+        url: {
+            type: String,
+            default: ""
+        },
+        imageColor: {
+            type: String,
+            default: ""
+        },
+        altText: {
+            type: String,
+            default: ""
+        },
+        targetUrl: {
+            type: String,
+            default: ""
+        },
+        targetWindow: {
+            type: String,
+            default: ""
+        },
+        width: {
+            type: String,
+            default: ""
+        },
+        height: {
+            type: String,
+            default: ""
+        },
+        hover: {
+            type: Object,
+            default: () => ({})
+        },
+        crop: {
+            type: Object,
+            default: () => ({})
+        },
+        styleObj: {
+            type: Object,
+            default: () => ({})
+        },
+        id: {
+            type: [String, Number],
+            default: ""
+        },
+        customClass: {
+            type: String,
+            default: ""
+        },
     },
     data() {
         return {
@@ -57,7 +95,7 @@
         }
     },
     created() {
-        this.styleObject = { 
+        this.styleObject = {
             ...this.styleObj,
             width: isNaN(+this.width) ? this.width : this.width+'px',
             height: isNaN(+this.height) ? this.height : this.height+'px'
@@ -107,7 +145,7 @@
                     this.styleObject['filter'] = 'grayscale(0%)';
                 } else if ( this.hover.action === 'picture' ) {
                     this.imageUrl = this.hover.alternatePicture;
-                } 
+                }
             }
         },
         onHoverOut() {
@@ -118,7 +156,7 @@
                     this.styleObject['filter'] = 'grayscale(100%)';
                 } else if ( this.hover.action === 'picture' ) {
                     this.imageUrl = this.url;
-                } 
+                }
             }
         },
         onLoad() {

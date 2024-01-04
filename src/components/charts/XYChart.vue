@@ -1,6 +1,14 @@
 <template>
     <div :class="customClass" :style="styleObj">
-        <chart :options="options" :series="series" :width="width" :height="height"></chart>
+        <chart
+            :options="options"
+            :series="series"
+            :width="width"
+            :height="height"
+            v-on="extraEvents"
+            v-bind="extraProps"
+            ref="zekXYChart"
+        ></chart>
     </div>
 </template>
 
@@ -13,28 +21,109 @@ export default {
         chart: VueApexCharts
     },
     props: {
-        type: String,
-        width: [String, Number],
-        height: [String, Number],
-        data: Array,
-        title: [String, Object],
-        id: [String, Number],
-        customClass: String,
-        styleObj: Object,
-        apiInfo: Object, // {url, method:get|post, type:graphql||http, query}
-        xAxis: Object, //{label,dataKey,tickSize,tickColor,data,type:category|datetime}
-        yAxis: Object, //{label,tickSize,tickColor,series} // series: [{label, color, data[], dataKey}]
+        type: {
+            type: String,
+            default: ""
+        },
+        width: {
+            type: [String, Number],
+            default: ""
+        },
+        height: {
+            type: [String, Number],
+            default: ""
+        },
+        data: {
+            type: Array,
+            default: () => []
+        },
+        title: {
+            type: [String, Object],
+            default: ""
+        },
+        id: {
+            type: [String, Number],
+            default: ""
+        },
+        customClass: {
+            type: String,
+            default: ""
+        },
+        styleObj: {
+            type: Object,
+            default: () => ({})
+        },
+        apiInfo: {
+            // {url, method:get|post, type:graphql||http, query}
+            type: Object,
+            default: () => ({})
+        },
+        xAxis: {
+            //{label,dataKey,tickSize,tickColor,data,type:category|datetime}
+            type: Object,
+            default: () => ({})
+        },
+        yAxis: {
+            //{label,tickSize,tickColor,series} // series: [{label, color, data[], dataKey}]
+            type: Object,
+            default: () => ({})
+        },
         showLegend: Boolean,
-        legend: Object, // https://apexcharts.com/docs/options/legend/
-        grid: Object, // https://apexcharts.com/docs/options/grid/
-        toolbar: Object, // https://apexcharts.com/docs/options/chart/toolbar/
-        showTooltip: Boolean,
-        tooltip: Object, // https://apexcharts.com/docs/options/tooltip/
-        dataLabels: Object, // https://apexcharts.com/docs/options/datalabels/
-        states: Object, // https://apexcharts.com/docs/options/states/
-        gradient: Object,
-        plotOptions: Object, // https://apexcharts.com/docs/options/plotoptions/
-        extraOptions: Object
+        legend: {
+            // https://apexcharts.com/docs/options/legend/
+            type: Object,
+            default: () => ({})
+        },
+        grid: {
+            // https://apexcharts.com/docs/options/grid/
+            type: Object,
+            default: () => ({})
+        },
+        toolbar: {
+            // https://apexcharts.com/docs/options/chart/toolbar/
+            type: Object,
+            default: () => ({})
+        },
+        showTooltip: {
+            type: Boolean,
+            default: false
+        },
+        tooltip: {
+            // https://apexcharts.com/docs/options/tooltip/
+            type: Object,
+            default: () => ({})
+        },
+        dataLabels: {
+            // https://apexcharts.com/docs/options/datalabels/
+            type: Object,
+            default: () => ({})
+        },
+        states: {
+            // https://apexcharts.com/docs/options/states/
+            type: Object,
+            default: () => ({})
+        },
+        gradient: {
+            type: Object,
+            default: () => ({})
+        },
+        plotOptions: {
+            // https://apexcharts.com/docs/options/plotoptions/
+            type: Object,
+            default: () => ({})
+        },
+        extraOptions: {
+            type: Object,
+            default: () => ({})
+        },
+         extraProps: {
+            type: Object,
+            default: () => ({})
+        },
+        extraEvents: {
+            type: Object,
+            default: () => ({})
+        }
     },
     data() {
         return {

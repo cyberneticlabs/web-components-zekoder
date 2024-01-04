@@ -1,5 +1,5 @@
 <template>
-    <div id="guided-form-container" :class="customClass" :style="styleObj">
+    <div ref="zekGuidedForm" id="guided-form-container" :class="customClass" :style="styleObj">
         <div v-if="currentStep" class="row question">
             <div class="col">
                 <div class="row design">
@@ -8,12 +8,12 @@
                         </slot>
                     </div>
                 </div>
-                
+
                 <div class="row input">
                     <div class="col">
                         <form @submit.prevent="changeStep(stepNumber+1)" :key="stepNumber">
                             <zek-column-content :column="content()" />
-                            
+
                             <span class="desc" v-if="currentStep.description">{{currentStep.description}}</span>
                             <div class="row text-center message">
                                 <zek-text v-if="successMessage" :text="successMessage" class="text-success"></zek-text>
@@ -69,20 +69,43 @@ export default {
     props: {
         steps: {
             type: Array,
-            required: true
+            required: true,
+            default: () => []
          },
         // showProgress: Boolean,
-        allowNavigate: Boolean,
-        customClass: String,
+        allowNavigate: {
+            type: Boolean,
+            default: false
+        },
+        customClass: {
+            type: String,
+            default: ""
+        },
         styleObj: Object,
-        backButton: [String, Object], //for string it is button label, for object it should be button component props
-        nextButton: [String, Object],
-        successMessage: String,
-        errorMessage: String,
+        backButton: {   //for string it is button label, for object it should be button component props
+            type: [String, Object],
+            default: ""
+        },
+        nextButton: {
+            type: [String, Object],
+            default: ""
+        },
+        successMessage: {
+            type: String,
+            default: ""
+        },
+        errorMessage: {
+            type: String,
+            default: ""
+        },
         step: {
             type: Number,
             default: 0
-        }
+        },
+         id: {
+            type: [String, Number],
+            default: ""
+        },
     },
     data() {
         return {
@@ -102,9 +125,9 @@ export default {
                             }
                         } :
                         step.type == 'dropdown' ? {
-                            onSelect: e => { 
+                            onSelect: e => {
                                 let value = step.selectType && step.selectType.toLowerCase()!='single'? e : e[0];
-                                this.formData[step.name] = value; 
+                                this.formData[step.name] = value;
                                 this.formSteps[this.stepNumber].value = value;
                                 this.formSteps[this.stepNumber].initialValue = value;
                                 this.emitLatestData(step.name);
@@ -187,11 +210,11 @@ export default {
     },
     methods: {
         emitLatestData(fieldName) {
-            this.$emit('update', { 
-                fieldName, 
+            this.$emit('update', {
+                fieldName,
                 data: this.formData
             });
-        },  
+        },
         submitForm() {
             this.$emit('onSubmit', this.formData);
         },

@@ -1,12 +1,12 @@
 <template>
 
-<ol v-if="type == 'ordered'" :style="styleObj">
+<ol v-if="type == 'ordered'" :style="styleObj" :class="customClass">
     <li v-for="(item,i) in listItems" :key="i">
         {{ hasChildren(item) ? item.label : item}}
         <zek-list v-if="hasChildren(item)" :listItems="item.children" :type="item.listType" :style="styleObj" />
     </li>
 </ol>
-<ul v-else :style="styleObj">
+<ul v-else :style="styleObj" :class="customClass">
     <li v-for="(item,i) in listItems" :key="i">
         {{ hasChildren(item) ? item.label : item}}
         <zek-list v-if="hasChildren(item)" :listItems="item.children" :type="item.listType" :style="styleObj" />
@@ -40,7 +40,18 @@ export default {
             },
             default: 'unordered'
         },
-        styleObj: Object,
+        styleObj: {
+            type: Object,
+            default: () => ({})
+        },
+        customClass: {
+            type: String,
+            default: ""
+        },
+        id: {
+            type: [String, Number],
+            default: ""
+        },
     },
     methods: {
         hasChildren(item) {

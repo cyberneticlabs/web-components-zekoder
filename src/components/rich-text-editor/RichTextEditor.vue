@@ -1,5 +1,5 @@
 <template>
-    <div :class="`zek-rich-editor-container ${customClass}`" :style="styleObj">
+    <div ref="zekRichTextEditor" :class="`zek-rich-editor-container ${customClass}`" :style="styleObj">
         <vue2-tinymce-editor
             class="zek-rich-editor"
             v-model="value"
@@ -74,6 +74,10 @@ export default {
             type: Object,
             required: false,
             default: () => ({})
+        },
+        id: {
+            type: [String, Number],
+            default: ""
         }
     },
     data() {

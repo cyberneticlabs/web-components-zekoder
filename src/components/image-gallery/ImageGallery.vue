@@ -1,8 +1,9 @@
 <template>
-    <div 
+    <div
         class="zek-image-gallery"
-        :class="customClass" 
+        :class="customClass"
         :style="styleObj"
+        ref="zekImageGallery"
     >
         <VueSlickCarousel v-bind="settings">
             <div v-for="(image, i) in images" :key="i">
@@ -28,10 +29,26 @@ export default {
             type: Boolean,
             default: false
         },
-        settings: Object,
-        images: Array,
-        customClass: String,
-        styleObj: Object
+        settings: {
+            type: Object,
+            default: () => ({})
+        },
+        images: {
+            type: Array,
+            default: () => []
+        },
+        customClass: {
+            type: String,
+            default: ""
+        },
+        styleObj: {
+            type: Object,
+            default: () => ({})
+        },
+        id: {
+            type: [String, Number],
+            default: ""
+        },
     },
     data() {
         return {

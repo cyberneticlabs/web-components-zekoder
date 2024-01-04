@@ -1,5 +1,5 @@
 <template>
-    <div class="row" :style="styleObj">
+    <div ref="zekSignup" class="row" :style="styleObj">
         <div class="col">
             <template v-if="socialIcons && socialIcons.length">
                 <div class="social-login">
@@ -53,8 +53,14 @@
     name: 'ZekSignup',
     components: { ZekForm },
     props: {
-        theme: String,
-        customClass: String,
+        theme: {
+            type: String,
+            default: ""
+        },
+        customClass: {
+            type: String,
+            default: ""
+        },
         heading: {
             type: [String, Object], //for object it should be {text:String, headingLevel:Number, styleObj:Object}
             default: 'Welcome to Zekoder!'
@@ -117,14 +123,42 @@
                 }
             ]}
         },
-        url: String,
-        signupButton: [String, Object],
-        socialIcons: Array, // [{icon: '', image:'', label:''}]
-        styleObj: Object,
-        error: String,
-        success: String,
-        orText: String,
-        showTerms: Boolean
+        url: {
+            type: String,
+            default: ""
+        },
+        signupButton: {
+            type: [String, Object],
+            default: ""
+        },
+        socialIcons: {  // [{icon: '', image:'', label:''}]
+            type: Array,
+            default: () => []
+        },
+        styleObj: {
+            type: Object,
+            default: () => ({})
+        },
+        error: {
+            type: String,
+            default: ""
+        },
+        success: {
+            type: String,
+            default: ""
+        },
+        orText:{
+            type: String,
+            default: ""
+        },
+        showTerms: {
+            type: Boolean,
+            default: false
+        },
+        id: {
+            type: [String, Number],
+            default: ""
+        },
     },
     data() {
         return {

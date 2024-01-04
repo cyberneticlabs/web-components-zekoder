@@ -1,6 +1,7 @@
 <template>
-    <div :class="customClass" :style="styleObj">
-        <chart type="bubble" :options="options" :series="series" :width="width" :height="height"></chart>
+    <div ref="bubbleChart" :class="customClass" :style="styleObj">
+        <chart type="bubble"  v-bind="extraProps"
+        v-on="extraEvents" :options="options" :series="series" :width="width" :height="height"></chart>
     </div>
 </template>
 
@@ -13,20 +14,61 @@ export default {
         chart : VueApexCharts
     },
     props: {
-        width: [String, Number],
-        height: [String, Number],
-        data: Array,
-        title: [String,Object],
-        id: [String, Number],
-        customClass: String,
-        styleObj: Object,
-        apiInfo: Object, // {url, method:get|post, type:graphql||http, query}
-        xAxis: Object, //{label,dataKey,tickSize,tickColor,type:category|datetime} 
-        yAxis: Object, //{label,tickSize,tickColor,series} // series: [{label, color, data[], dataKeys}]
-        showLegend: Boolean,
+        width: {
+            type: [String, Number],
+            default: ""
+        },
+        height: {
+            type: [String, Number],
+            default: ""
+        },
+        data: {
+            type: Array,
+            default: () => ([])
+        },
+        title: {
+            type: [String,Object],
+            default: ""
+        },
+        id: {
+            type: [String, Number],
+            default: ""
+        },
+        customClass: {
+            type: String,
+            default: ""
+        },
+        styleObj: {
+            type: Object,
+            default: () => ({})
+        },
+        apiInfo: {  // {url, method:get|post, type:graphql||http, query}
+            type: Object,
+            default: () => ({})
+        },
+        xAxis: {   //{label,dataKey,tickSize,tickColor,type:category|datetime}
+            type: Object,
+            default: () => ({})
+        },
+        yAxis: {   //{label,tickSize,tickColor,series} // series: [{label, color, data[], dataKeys}]
+            type: Object,
+            default: () => ({})
+        },
+        showLegend: {
+            type: Boolean,
+            default: true
+        },
         chartOptions: { // object to overwrite any of the chart option, or to add a new option.
             type: Object,
             default: () => { return {} }
+        },
+        extraProps: {
+            type: Object,
+            default: () => ({})
+        },
+        extraEvents: {
+            type: Object,
+            default: () => ({})
         }
     },
     data() {
@@ -125,7 +167,7 @@ export default {
                     } else if(ser.dataKeys && this.chartData.length && ser.dataKeys.yValue && ser.dataKeys.zValue) {
                         if( ser.dataKeys.yValue in this.chartData[0] && ser.dataKeys.zValue in this.chartData[0]) {
                             data = this.chartData.map(item => {
-                                return [ 
+                                return [
                                     +item[ser.dataKeys.xValue] || index,
                                     +item[ser.dataKeys.yValue],
                                     +item[ser.dataKeys.zValue]

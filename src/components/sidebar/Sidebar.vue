@@ -1,31 +1,26 @@
 <template>
-    <div class="zek-sidebar" :class="isCollapsed ? 'collapsed' : ''" :style="styleObject">
+    <div ref="zekSidebar" class="zek-sidebar" :class="isCollapsed ? 'collapsed' : ''" :style="styleObject">
         <div class="zek-sidebar-links">
-            <li
-                v-if="allowExpandCollapse"
-                class="link-container sidebar-title"
-                :class="{titlePresent: title}"
-            >
-                <a
-                    :title="isCollapsed ? 'Collapse' : 'Expand'"
-                    class="link sidebar-title-link"
-                >
-                    <RouterLink @click.native="$emit('onRoute', title.url)" :to="title.url ? title.url : ''" v-if="title && !isCollapsed" class="sidebar-title" :style="title.style ? title.style : {cursor: 'default'}">
+            <li v-if="allowExpandCollapse" class="link-container sidebar-title" :class="{ titlePresent: title }">
+                <a :title="isCollapsed ? 'Collapse' : 'Expand'" class="link sidebar-title-link">
+                    <RouterLink
+                        @click.native="$emit('onRoute', title.url)"
+                        :to="title.url ? title.url : ''"
+                        v-if="title && !isCollapsed"
+                        class="sidebar-title"
+                        :style="title.style ? title.style : { cursor: 'default' }"
+                    >
                         {{ title.label ? title.label : title }}
                     </RouterLink>
                     <i
-                        v-if="
-                            expandIcon.icon && expandIcon.iconType !== 'custom'
-                        "
+                        v-if="expandIcon.icon && expandIcon.iconType !== 'custom'"
                         class="icon"
                         :class="expandIcon.icon"
                         :style="expandIcon.iconStyle"
                         @click="onCollapse"
                     ></i>
                     <img
-                        v-else-if="
-                            expandIcon.icon && expandIcon.iconType === 'custom'
-                        "
+                        v-else-if="expandIcon.icon && expandIcon.iconType === 'custom'"
                         class="icon"
                         :src="expandIcon.icon"
                         :style="expandIcon.iconStyle"
@@ -34,10 +29,7 @@
                 </a>
             </li>
             <div class="sidebar-logo-container" v-if="logo && logo.src">
-                <img
-                    v-bind="logo"
-                    class="sidebar-logo"
-                />
+                <img v-bind="logo" class="sidebar-logo" />
             </div>
             <div v-for="(sec, i) in sections" :key="i + refreshKey"  @click="refreshKey++">
                 <li
@@ -46,12 +38,7 @@
                     :class="sec.title.isHovering ? 'hovering' : sec.title.isActive ? 'active-link' : ''"
                     @mouseover="sec.title.isHovering = true"
                     @mouseout="sec.title.isHovering = false"
-                    :style="
-                        (sec.title.isActive || sec.title.isHovering) &&
-                        activeColor
-                            ? { color: activeColor }
-                            : ''
-                    "
+                    :style="(sec.title.isActive || sec.title.isHovering) && activeColor ? { color: activeColor } : ''"
                 >
                     <a
                         v-if="sec.links && sec.links.length"
@@ -60,25 +47,16 @@
                         class="link title"
                         @click="sec.title.isExpanded = !sec.title.isExpanded"
                         :style="
-                            (sec.title.isActive || sec.title.isHovering) &&
-                            activeColor
-                                ? { color: activeColor }
-                                : ''
+                            (sec.title.isActive || sec.title.isHovering) && activeColor ? { color: activeColor } : ''
                         "
                     >
                         <i
-                            v-if="
-                                sec.title.icon &&
-                                    sec.title.iconType !== 'custom'
-                            "
+                            v-if="sec.title.icon && sec.title.iconType !== 'custom'"
                             class="icon"
                             :class="sec.title.icon"
                         ></i>
                         <img
-                            v-else-if="
-                                sec.title.icon &&
-                                    sec.title.iconType === 'custom'
-                            "
+                            v-else-if="sec.title.icon && sec.title.iconType === 'custom'"
                             class="icon"
                             :src="sec.title.icon"
                         />
@@ -87,11 +65,7 @@
                         </span>
                         <i
                             class="icon section-expand fa"
-                            :class="
-                                sec.title.isExpanded
-                                    ? 'fa-chevron-up'
-                                    : 'fa-chevron-down'
-                            "
+                            :class="sec.title.isExpanded ? 'fa-chevron-up' : 'fa-chevron-down'"
                             v-if="sec.title.showArrow && !isCollapsed"
                         />
                     </a>
@@ -103,25 +77,16 @@
                         @click="sec.title.isExpanded = !sec.title.isExpanded"
                         @click.native="$emit('onRoute', sec.title.url)"
                         :style="
-                            (sec.title.isActive || sec.title.isHovering) &&
-                            activeColor
-                                ? { color: activeColor }
-                                : ''
+                            (sec.title.isActive || sec.title.isHovering) && activeColor ? { color: activeColor } : ''
                         "
                     >
                         <i
-                            v-if="
-                                sec.title.icon &&
-                                    sec.title.iconType !== 'custom'
-                            "
+                            v-if="sec.title.icon && sec.title.iconType !== 'custom'"
                             class="icon"
                             :class="sec.title.icon"
                         ></i>
                         <img
-                            v-else-if="
-                                sec.title.icon &&
-                                    sec.title.iconType === 'custom'
-                            "
+                            v-else-if="sec.title.icon && sec.title.iconType === 'custom'"
                             class="icon"
                             :src="sec.title.icon"
                         />
@@ -130,11 +95,7 @@
                         </span>
                         <i
                             class="icon section-expand fa"
-                            :class="
-                                sec.title.isExpanded
-                                    ? 'fa-chevron-up'
-                                    : 'fa-chevron-down'
-                            "
+                            :class="sec.title.isExpanded ? 'fa-chevron-up' : 'fa-chevron-down'"
                             v-if="sec.title.showArrow && !isCollapsed"
                         />
                     </RouterLink>
@@ -152,36 +113,17 @@
                         @mouseover="link.isHovering = true"
                         @mouseout="link.isHovering = false"
                         @click="linkClicked(sec, link)"
-                        :style="
-                            (link.isActive || link.isHovering) && activeColor
-                                ? { color: activeColor }
-                                : ''
-                        "
+                        :style="(link.isActive || link.isHovering) && activeColor ? { color: activeColor } : ''"
                     >
                         <RouterLink
                             :to="link.url"
                             :title="link.tooltip"
                             class="link"
-                            :style="
-                                (link.isActive || link.isHovering) &&
-                                activeColor
-                                    ? { color: activeColor }
-                                    : ''
-                            "
+                            :style="(link.isActive || link.isHovering) && activeColor ? { color: activeColor } : ''"
                             @click.native="$emit('onRoute', link.url)"
                         >
-                            <i
-                                v-if="link.icon && link.iconType !== 'custom'"
-                                class="icon"
-                                :class="link.icon"
-                            ></i>
-                            <img
-                                v-else-if="
-                                    link.icon && link.iconType === 'custom'
-                                "
-                                class="icon"
-                                :src="link.icon"
-                            />
+                            <i v-if="link.icon && link.iconType !== 'custom'" class="icon" :class="link.icon"></i>
+                            <img v-else-if="link.icon && link.iconType === 'custom'" class="icon" :src="link.icon" />
                             <span v-show="link.label && !isCollapsed">
                                 {{ link.label }}
                             </span>
@@ -198,32 +140,18 @@
                     :to="link.url"
                     :title="link.tooltip"
                     class="link"
-                    :style="
-                        (link.isActive || link.isHovering) && activeColor
-                            ? { color: activeColor }
-                            : ''
-                    "
+                    :style="(link.isActive || link.isHovering) && activeColor ? { color: activeColor } : ''"
                     @click.native="$emit('onRoute', link.url)"
                 >
-                    <i
-                        v-if="link.icon && link.iconType !== 'custom'"
-                        class="icon"
-                        :class="link.icon"
-                    ></i>
-                    <img
-                        v-else-if="link.icon && link.iconType === 'custom'"
-                        class="icon"
-                        :src="link.icon"
-                    />
+                    <i v-if="link.icon && link.iconType !== 'custom'" class="icon" :class="link.icon"></i>
+                    <img v-else-if="link.icon && link.iconType === 'custom'" class="icon" :src="link.icon" />
                 </RouterLink>
             </div>
             <div
                 v-if="footer.darkmode"
                 class="footer-darkmode"
                 :style="{
-                    backgroundColor: footer.darkmode.enabled
-                        ? footer.darkmode.backgroundColor
-                        : 'transparent'
+                    backgroundColor: footer.darkmode.enabled ? footer.darkmode.backgroundColor : 'transparent'
                 }"
             >
                 <div class="darkmode-toggle">
@@ -232,9 +160,7 @@
                         id="darkmode-toggle"
                         v-model="footer.darkmode.enabled"
                         :checked="footer.darkmode.enabled"
-                        @change="
-                            $emit('darkModeToggle', footer.darkmode.enabled)
-                        "
+                        @change="$emit('darkModeToggle', footer.darkmode.enabled)"
                     />
                     <i
                         v-show="footer.darkmode.enabled"
@@ -253,13 +179,11 @@
                         :style="
                             footer.darkmode.enabled
                                 ? {
-                                      backgroundColor:
-                                          footer.darkmode.circleColor,
+                                      backgroundColor: footer.darkmode.circleColor,
                                       left: 'calc(100% - 20px)'
                                   }
                                 : {
-                                      backgroundColor:
-                                          footer.darkmode.circleColor
+                                      backgroundColor: footer.darkmode.circleColor
                                   }
                         "
                     />
@@ -273,7 +197,10 @@
 export default {
     name: "ZekSidebar",
     props: {
-        title: { type: [String, Object] },
+        title: {
+            type: [String, Object],
+            default: ""
+        },
         expandIcon: {
             type: Object,
             default: () => {
@@ -284,48 +211,66 @@ export default {
             }
         },
         backgroundColor: {
-            type: String
+            type: String,
+            default: ""
         },
         width: {
-            type: String
+            type: String,
+            default: ""
         },
         allowExpandCollapse: {
-            type: Boolean
+            type: Boolean,
+            default: false
         },
         collapsed: {
-            type: Boolean
+            type: Boolean,
+            default: false
         },
         collapsedWidth: {
-            type: String
+            type: String,
+            default: ""
         },
         links: {
-            type: Array
+            type: Array,
+            default: () => []
         },
         sections: {
             type: Array, // [{links, type, label, icon, collapsable}]
             default: () => []
         },
         activeClass: {
-            type: String
+            type: String,
+            default: ""
         },
         activeColor: {
-            type: String
+            type: String,
+            default: ""
         },
         alignItems: {
-            type: String
+            type: String,
+            default: ""
         },
         styleObj: {
-            type: Object
+            type: Object,
+            default: () => ({})
         },
         footer: {
-            type: Object
+            type: Object,
+            default: () => ({})
         },
         logo: {
-            type: Object //provide all the props that need to be bound to the img tag
+            //provide all the props that need to be bound to the img tag
+            type: Object,
+            default: () => ({})
         },
         showFooterOnCollapse: {
-            type: Boolean
-        }
+            type: Boolean,
+            default: false
+        },
+        id: {
+            type: [String, Number],
+            default: ""
+        },
     },
     data() {
         return {
@@ -339,9 +284,7 @@ export default {
     created() {
         this.styleObject = {
             ...this.styleObj,
-            width: this.collapsed
-                ? this.collapsedWidth
-                : this.width || this.styleObj.width || ""
+            width: this.collapsed ? this.collapsedWidth : this.width || this.styleObj.width || ""
         };
         if (!this.sections.length && this.links && this.links.length) {
             this.sections.push({
@@ -354,15 +297,13 @@ export default {
     methods: {
         onCollapse(event) {
             this.isCollapsed = !this.isCollapsed;
-            this.styleObject.width = this.isCollapsed
-                ? this.collapsedWidth
-                : this.width || this.styleObj.width || "";
+            this.styleObject.width = this.isCollapsed ? this.collapsedWidth : this.width || this.styleObj.width || "";
             this.$emit("onExpandCollapse", this.isCollapsed);
         },
         linkClicked(sec, link) {
             this.sections.forEach(section => {
                 section.isExpanded = false;
-                if ( section.links && section.links.length ) {
+                if (section.links && section.links.length) {
                     section.links.forEach(l => {
                         l.isActive = false;
                     });
@@ -376,12 +317,12 @@ export default {
         checkActiveLink() {
             const path = window.location.pathname;
             this.sections.forEach(sec => {
-                if ( path === sec.url ) {
+                if (path === sec.url) {
                     sec.isActive = true;
                 }
-                if ( sec.links && sec.links.length ) {
+                if (sec.links && sec.links.length) {
                     sec.links.forEach(link => {
-                        if ( path === link.url ) {
+                        if (path === link.url) {
                             link.isActive = true;
                         }
                     });

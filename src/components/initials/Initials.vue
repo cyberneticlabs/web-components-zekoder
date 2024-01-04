@@ -1,22 +1,39 @@
 <template>
-    <div 
+    <div
         class="initials"
-        :class="customClass" 
-        :style="styleObj" 
+        :class="customClass"
+        :style="styleObj"
+        ref="zekInitials"
     >
         <span>{{initials}}</span>
     </div>
 </template>
 
 <script>
-  
+
   export default {
     name: 'ZekInitials',
     props: {
-        name: String,
-        charactersToShow: Number,
-        customClass: String,
-        styleObj: Object
+        name: {
+            type: String,
+            default: ""
+        },
+        charactersToShow: {
+            type: Number,
+            default: 0
+        },
+        customClass: {
+            type: String,
+            default: ""
+        },
+        styleObj: {
+            type: Object,
+            default: () => ({})
+        },
+        id: {
+            type: [String, Number],
+            default: ""
+        },
     },
     data() {
         return {

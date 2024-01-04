@@ -1,5 +1,5 @@
 <template>
-  <div class="zek-progress-bar" :class="customClass">
+  <div ref="zekProgressBar" class="zek-progress-bar" :class="customClass" :style="styleObj">
     <span v-if="label" :style="label.style">{{ label.text | label }}</span>
     <b-progress
       :value="value"
@@ -7,6 +7,7 @@
       :height="height"
       :show-value="showValue"
       v-bind="extraProps"
+      v-on="extraEvents"
     >
       <b-progress-bar v-if="customBar" :value="value">
         <span :class="customBar.class"> {{ customBar.text }} </span>
@@ -36,10 +37,12 @@ export default {
         },
         value: {
             type: [Number, String] ,
+            default: "",
             required: true,
         },
         max: {
             type: [Number, String],
+            default: "",
             required: true,
         },
         height: {
@@ -49,10 +52,12 @@ export default {
         label: {
             type: Object,
             required: false,
+            default: () => ({})
         },
         customBar: {
             type: Object,
             required: false,
+            default: () => ({})
         },
         customClass: {
             type: String,
@@ -61,7 +66,20 @@ export default {
         },
         extraProps: {
             type: Object,
+            default: () => ({}),
             required: false,
+        },
+        extraEvents: {
+            type: Object,
+            default: () => ({})
+        },
+          styleObj: {
+            type: Object,
+            default: () => ({})
+        },
+        id: {
+            type: [String, Number],
+            default: ""
         }
     },
 };

@@ -1,29 +1,74 @@
 <template>
     <div :class="customClass" :style="styleObj">
-        <chart type="treemap" :options="options" :series="series" :width="width" :height="height"></chart>
+        <chart
+            type="treemap"
+            :options="options"
+            :series="series"
+            :width="width"
+            :height="height"
+            v-on="extraEvents"
+            v-bind="extraProps"
+            ref="zekTreemapChart"
+        ></chart>
     </div>
 </template>
 
 <script>
-import VueApexCharts from 'vue-apexcharts';
-import * as axios from 'axios';
+import VueApexCharts from "vue-apexcharts";
+import * as axios from "axios";
 export default {
-    name: 'ZekTreemapChart',
+    name: "ZekTreemapChart",
     components: {
         chart: VueApexCharts
     },
     props: {
-        width: [String, Number],
-        height: [String, Number],
-        data: Array,
-        title: [String, Object],
-        id: [String, Number],
-        customClass: String,
-        styleObj: Object,
-        apiInfo: Object, // {url, method:get|post, type:graphql||http, query}
-        chartOptions: { // object to overwrite any of the chart option, or to add a new option.
+        width: {
+            type: [String, Number],
+            default: ""
+        },
+        height: {
+            type: [String, Number],
+            default: ""
+        },
+        data: {
+            type: Array,
+            default: () => []
+        },
+        title: {
+            type: [String, Object],
+            default: ""
+        },
+        id: {
+            type: [String, Number],
+            default: ""
+        },
+        customClass: {
+            type: String,
+            default: ""
+        },
+        styleObj: {
             type: Object,
-            default: () => { return {} }
+            default: () => ({})
+        },
+        apiInfo: {
+            // {url, method:get|post, type:graphql||http, query}
+            type: Object,
+            default: () => ({})
+        },
+        chartOptions: {
+            // object to overwrite any of the chart option, or to add a new option.
+            type: Object,
+            default: () => {
+                return {};
+            }
+        },
+        extraProps: {
+            type: Object,
+            default: () => ({})
+        },
+        extraEvents: {
+            type: Object,
+            default: () => ({})
         }
     },
     data() {
@@ -41,10 +86,10 @@ export default {
                     }
                 },
                 noData: {
-                    text: 'Loading...',
+                    text: "Loading...",
                     style: {
                         color: undefined,
-                        fontSize: '20px'
+                        fontSize: "20px"
                     }
                 },
                 plotOptions: {
@@ -55,13 +100,12 @@ export default {
                 },
                 colors: [],
                 title: {
-                    text: this.title ? (this.title.text || this.title) : undefined,
+                    text: this.title ? this.title.text || this.title : undefined,
                     style: this.title && this.title.style ? this.title.style : {}
-
                 },
                 ...this.chartOptions
-            },
-        }
+            }
+        };
     },
     created() {
         //chart settings
@@ -79,7 +123,7 @@ export default {
     },
     methods: {
         fetchData() {
-            const method = this.apiInfo.method || (this.apiInfo.type == 'graphql' ? 'post' : 'get')
+            const method = this.apiInfo.method || (this.apiInfo.type == "graphql" ? "post" : "get");
             axios({
                 method: method,
                 url: this.apiInfo.url,
@@ -90,8 +134,8 @@ export default {
                     this.populateGraph();
                 })
                 .catch(err => {
-                    this.options.noData.text = 'Could not fetch data!';
-                    this.options.noData.style.color = 'rgb(255,0,0)';
+                    this.options.noData.text = "Could not fetch data!";
+                    this.options.noData.style.color = "rgb(255,0,0)";
                 });
         },
         populateGraph() {
@@ -115,22 +159,21 @@ export default {
                 });
                 console.log(this.series);
                 if (this.series.length < 1) {
-                    this.options.noData.text = 'No data available!'
-                    this.options.noData.style.color = 'rgb(255,0,0)';
+                    this.options.noData.text = "No data available!";
+                    this.options.noData.style.color = "rgb(255,0,0)";
                 }
             }
         }
     },
     watch: {
-        data: function (val) {
+        data: function(val) {
             if (val && val.length) {
                 this.chartData = val;
                 this.series = [];
-                this.options = { ...this.options, labels: [], colors: [] }
+                this.options = { ...this.options, labels: [], colors: [] };
                 this.populateGraph();
             }
         }
     }
-
-}
+};
 </script>

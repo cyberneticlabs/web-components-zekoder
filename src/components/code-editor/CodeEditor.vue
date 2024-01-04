@@ -1,5 +1,5 @@
 <template>
-    <div class="zek-code-editor">
+    <div class="zek-code-editor" :style="styleObj">
         <editor
             ref="codeEditor"
             v-model="content"
@@ -17,6 +17,8 @@
                 placeholder: 'Enter your code here...',
                 ...options
             }"
+            v-on="extraEvents"
+            v-bind="extraProps"
         ></editor>
         <ZekChatPrompt :show="showPrompt" :loading="loading" :customClass="'zek-code-editor-prompt'" v-bind="prompt" @onSend="sendPrompt"></ZekChatPrompt>
     </div>
@@ -82,6 +84,22 @@ export default {
         options: {
             type: Object,
             default: () => ({})
+        },
+        styleObj: {
+            type: Object,
+            default: () => ({})
+        },
+        extraProps: {
+            type: Object,
+            default: () => ({})
+        },
+        extraEvents: {
+            type: Object,
+            default: () => ({})
+        },
+        id: {
+            type: [String, Number],
+            default: ""
         },
         showPrompt: {
             type: Boolean,

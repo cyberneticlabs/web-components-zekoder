@@ -3,6 +3,7 @@
         class="cards-list"
         :class="customClass"
         :style="listStyle"
+        ref="zekCardList"
     >
         <zek-card
             v-for="(card,i) in cards"
@@ -20,10 +21,26 @@ export default {
     components: { ZekCard },
     name: "ZekCardsList",
     props: {
-        cardsHeight: String,
-        cardsWidth: String,
-        customClass: String,
-        cards: Array,
+        id: {
+            type: String,
+            default: ""
+        },
+        cardsHeight: {
+            type: String,
+            default: ""
+        },
+        cardsWidth: {
+            type: String,
+            default: ""
+        },
+        customClass: {
+            type: String,
+            default: ""
+        },
+        cards: {
+            type: Array,
+            default: () => ([])
+        },
         rows: {
             type: Number,
             default: 1
@@ -32,9 +49,18 @@ export default {
             type: Number,
             default: 1
         },
-        styleObj: Object, //for parent container
-        cardStyle: Object, //for cards
-        direction: String, //top-down, down-top, left-right, right-left
+        styleObj: {    //for parent container
+            type: Object,
+            default: () => ({})
+        },
+        cardStyle: {   //for cards
+            type: Object,
+            default: () => ({})
+        },
+        direction: {  //top-down, down-top, left-right, right-left
+            type: String,
+            default: ""
+        },
         cardsGap: {
             type: [Number,String],
             default: '10px'

@@ -1,6 +1,15 @@
 <template>
     <div :class="customClass" :style="styleObj">
-        <chart type="radialBar" :options="options" :series="series" :width="width" :height="height"></chart>
+        <chart
+            type="radialBar"
+            :options="options"
+            :series="series"
+            :width="width"
+            :height="height"
+            v-on="extraEvents"
+            v-bind="extraProps"
+            ref="zekRadialChart"
+        ></chart>
     </div>
 </template>
 
@@ -13,28 +22,101 @@ export default {
         chart: VueApexCharts
     },
     props: {
-        width: [String, Number],
-        height: [String, Number],
-        data: Array,
-        colors: Array,
-        title: [String, Object],
-        id: [String, Number],
-        customClass: String,
-        styleObj: Object,
-        apiInfo: Object, // {url, method:get|post, type:graphql||http, query}
-        showLegend: Boolean,
-        stroke: Object, // https://apexcharts.com/docs/options/stroke/ (curve, lineCap, width)
-        size: String,
-        labels: Object,
-        hollow: Object, // https://apexcharts.com/docs/options/plotoptions/radialbar/ (size, margin, background, image, imageWidth, imageHeight, imageClipped, imageOffsetX, imageOffsetY, position, dropShadow)
-        track: Object, // https://apexcharts.com/docs/options/plotoptions/radialbar/ (background, strokeWidth, margin, dropShadow)
-        fontSize: String,
-        fontStyle: Object, // https://apexcharts.com/docs/options/dataLabels/value/ (fontSize, fontFamily, fontWeight, color, offsetX, offsetY, formatter, textAnchor, dropShadow)
-        nameText: Object,
-        totalText: Object,
-        chartOptions: { // object to overwrite any of the chart option, or to add a new option.
+        width: {
+            type: [String, Number],
+            default: ""
+        },
+        height: {
+            type: [String, Number],
+            default: ""
+        },
+        data: {
+            type: Array,
+            default: () => []
+        },
+        colors: {
+            type: Array,
+            default: () => []
+        },
+        title: {
+            type: [String, Object],
+            default: ""
+        },
+        id: {
+            type: [String, Number],
+            default: ""
+        },
+        customClass: {
+            type: String,
+            default: ""
+        },
+        styleObj: {
             type: Object,
-            default: () => { return {} }
+            default: () => ({})
+        },
+        apiInfo: {
+            // {url, method:get|post, type:graphql||http, query}
+            type: Object,
+            default: () => ({})
+        },
+        showLegend: {
+            type: Boolean,
+            default: true
+        },
+        stroke: {
+            // https://apexcharts.com/docs/options/stroke/ (curve, lineCap, width)
+            type: Object,
+            default: () => ({})
+        },
+        size: {
+            type: String,
+            default: ""
+        },
+        labels: {
+            type: Object,
+            default: () => ({})
+        },
+        hollow: {
+            // https://apexcharts.com/docs/options/plotoptions/radialbar/ (size, margin, background, image, imageWidth, imageHeight, imageClipped, imageOffsetX, imageOffsetY, position, dropShadow)
+            type: Object,
+            default: () => ({})
+        },
+        track: {
+            // https://apexcharts.com/docs/options/plotoptions/radialbar/ (background, strokeWidth, margin, dropShadow)
+            type: Object,
+            default: () => ({})
+        },
+        fontSize: {
+            type: String,
+            default: ""
+        },
+        fontStyle: {
+            // https://apexcharts.com/docs/options/dataLabels/value/ (fontSize, fontFamily, fontWeight, color, offsetX, offsetY, formatter, textAnchor, dropShadow)
+            type: Object,
+            default: () => ({})
+        },
+        nameText: {
+            type: Object,
+            default: () => ({})
+        },
+        totalText: {
+            type: Object,
+            default: () => ({})
+        },
+        chartOptions: {
+            // object to overwrite any of the chart option, or to add a new option.
+            type: Object,
+            default: () => {
+                return {};
+            }
+        },
+        extraProps: {
+            type: Object,
+            default: () => ({})
+        },
+        extraEvents: {
+            type: Object,
+            default: () => ({})
         }
     },
     data() {

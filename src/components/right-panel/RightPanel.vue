@@ -1,10 +1,10 @@
 <template>
-    <div class="right-panel-container">
+    <div ref="zekRightPanel" class="right-panel-container">
         <div
             :class="'right-panel p-4 ' + (customClass || '')"
             :style="{ ...styleObj, width, right: show ? '0' : `-${width}` }"
         >
-            <transition name="slide" >
+            <transition name="slide">
                 <template v-if="showForm">
                     <ZekForm
                         v-if="formProps"
@@ -28,15 +28,34 @@ export default {
     name: "ZekRightPanel",
     components: { ZekForm },
     props: {
-        show: Boolean,
-        formProps: Object,
-        customClass: String,
+        show: {
+            type: Boolean,
+            default: false
+        },
+        formProps: {
+            type: Object,
+            default: () => ({})
+        },
+        customClass: {
+            type: String,
+            default: ""
+        },
         width: {
             type: String,
             default: "500px"
         },
-        styleObj: Object,
-        content: Object
+        styleObj: {
+            type: Object,
+            default: () => ({})
+        },
+        content: {
+            type: Object,
+            default: () => ({})
+        },
+        id: {
+            type: [String, Number],
+            default: ""
+        }
     },
     data() {
         return {
@@ -81,6 +100,6 @@ export default {
     }
 }
 .slide-leave-active {
-    transition: all .7s ease;
+    transition: all 0.7s ease;
 }
 </style>

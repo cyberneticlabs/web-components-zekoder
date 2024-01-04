@@ -1,5 +1,5 @@
 <template>
-    <div :class="customClass" :style="styleObj">
+    <div ref="ganttChart" :class="customClass" :style="styleObj">
         <chart type="rangeBar" :options="options" :series="options.series" :width="width" :height="height"></chart>
     </div>
 </template>

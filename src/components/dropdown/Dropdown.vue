@@ -1,5 +1,5 @@
 <template>
-    <div class="zek-dropdown" v-click-outside="close" :class="{'with-filters': allowFiltering }" @click="$emit('onClick', $event)">
+    <div ref="zekDropdown" class="zek-dropdown" v-click-outside="close" :class="{'with-filters': allowFiltering }" @click="$emit('onClick', $event)">
         <span v-if="showLabel && label" :style="label.style">
             <span v-html="label.html || label.text || label"></span>
             <span class="required-asterik" v-if="required">*</span>
@@ -125,61 +125,91 @@ export default {
     name: "ZekDropdown",
     props: {
         hint: String,
-        customIcon: String,
+        customIcon: {
+            type: String,
+            default: ""
+        },
         showSelected: {
             type: Boolean,
             default: true
         },
         label: {
-            type: [String, Object]
+            type: [String, Object],
+            default: ""
         },
         items: {
             // [{text,value},{text,value}] or [text,text]
             type: Array,
             required: true
         },
-        value: [String, Array],
+        value: {
+            type: [String, Array],
+            default: ""
+        },
         selectType: {
             type: String,
             default: "single"
         },
         theme: {
-            type: String
+            type: String,
+            default: ""
         },
         cssClass: {
-            type: String
+            type: String,
+            default: ""
         },
         showIcon: {
             type: Boolean,
             default: false
         },
         styleObj: {
-            type: Object
+            type: Object,
+            default: () => ({})
         },
         buttonStyle: {
-            type: Object
+            type: Object,
+            default: () => ({})
         },
         listStyle: {
-            type: Object
+            type: Object,
+            default: () => ({})
         },
         itemStyle: {
-            type: Object
+            type: Object,
+            default: () => ({})
         },
         selectedItemStyle: {
-            type: Object
+            type: Object,
+            default: () => ({})
         },
         iconStyle: {
-            type: Object
+            type: Object,
+            default: () => ({})
         },
         allowFiltering: {
             type: Boolean,
             default: false
         },
-        filterBarPlaceholder: String,
-        placeholder: String,
-        showLabel: Boolean, //to be removed later
-        required: Boolean,
-        disabled: Boolean,
+        filterBarPlaceholder: {
+            type: String,
+            default: ""
+        },
+        placeholder: {
+            type: String,
+            default: ""
+        },
+        showLabel:{  //to be removed later
+            type: Boolean,
+            default: false
+        },
+        required: {
+            type: Boolean,
+            default: false
+        },
+        disabled: {
+            type: Boolean,
+            default: false
+        },
         toggleOnSelect: {
             type: Boolean,
             default: true

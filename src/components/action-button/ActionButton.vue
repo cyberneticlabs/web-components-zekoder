@@ -4,10 +4,13 @@
         @click="clicked($event)"
         @mouseover="isHovering = true"
         @mouseleave="isHovering = false"
-        v-on="customEvents"
+        v-on="extraEvents"
+        v-bind="extraProps"
         :class="getClasses()"
         :disabled="disabled"
-        :style="styleObj">
+        :style="styleObj"
+        ref="zekButton"
+        >
 
         <span v-if="theme=='material'" class="mdc-button__ripple"></span>
 
@@ -31,6 +34,10 @@ export default {
             type: String,
             default: 'custom'
         },
+         id: {
+            type: String,
+            default: ""
+        },
         styleObj: {
             type: Object,
             default: ()=>{return{
@@ -43,24 +50,58 @@ export default {
             type: String,
             default: 'Text Button'
         },
-        url: String,
-        type: String,
-        disabled: Boolean,
-        loading: Boolean,
-        customClass: String,
-        size: String,
-        active: Boolean,
-        outlineButton: Boolean,
-        icon: String,
-        iconTrailing: Boolean,
+        url: {
+            type: String,
+            default: ""
+        },
+        type: {
+            type: String,
+            default: ""
+        },
+        disabled: {
+            type: Boolean,
+            default: false
+        },
+        loading: {
+            type: Boolean,
+            default: false
+        },
+        customClass: {
+            type: String,
+            default: ""
+        },
+        size: {
+            type: String,
+            default: ""
+        },
+        active: {
+            type: Boolean,
+            default: false
+        },
+        outlineButton: {
+            type: Boolean,
+            default: false
+        },
+        icon: {
+            type: String,
+            default: ""
+        },
+        iconTrailing: {
+            type: Boolean,
+            default: false
+        },
         buttonType: {
             type: String, //button, submit etc
             default: 'button'
         },
-        customEvents: {
+         extraEvents: {
             type: Object,
-            default: ()=>{return{}}
-        }
+            default: () => ({})
+        },
+        extraProps: {
+            type: Object,
+            default: () => ({})
+        },
     },
     data(){
       return {

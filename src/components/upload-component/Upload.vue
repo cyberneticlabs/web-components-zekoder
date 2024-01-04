@@ -1,5 +1,5 @@
 <template>
-  <div :style="styleObj"  :class="customClass + '-container'">
+  <div ref="zekUpload" :style="styleObj"  :class="customClass + '-container'">
     <div v-if="showPreview && type == 'image'" :style="previewSettings">
       <img
         v-for="(item, i) in uploaded"
@@ -31,6 +31,7 @@ export default {
   props: {
     type: {
       type: String,
+      default: ""
     },
     acceptedFileTypes: {
       type: Array,
@@ -62,10 +63,11 @@ export default {
     },
     styleObj: {
         type: Object,
-        default: () => ({}),
+        default: () => ({})
     },
       inputStyle: {
-        type: Object
+        type: Object,
+        default: () => ({})
       },
   },
   computed: {

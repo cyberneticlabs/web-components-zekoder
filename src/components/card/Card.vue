@@ -6,6 +6,9 @@
         @click="cardClicked($event)"
         @mouseenter="cardHovered($event)"
         @mouseleave="onHoverOut()"
+        v-bind="extraProps"
+        v-on="extraEvents"
+        ref="zekCard"
     >
         <div
             v-for="(row,i) in cardContent.rows"
@@ -34,21 +37,50 @@ import axios from "axios"
 export default {
     name: "ZekCard",
     props: {
-        backgroundColor: String,
-        hoverBackgroundColor: String,
+        backgroundColor: {
+            type: String,
+            default: ""
+        },
+        hoverBackgroundColor: {
+            type: String,
+            default: ""
+        },
         content: {
             type: Object,
             required: true
         },
-        customClass: String,
-        flipContent: Object,
-        flipOn: String, //hover, click
+        customClass: {
+            type: String,
+            default: ""
+        },
+        flipContent: {
+            type: Object,
+            default: () => ({})
+        },
+        flipOn: {  //hover, click
+            type: String,
+            default: ""
+        },
         id: {
             type: [Number, String],
             default: 0
         },
-        styleObj: Object,
-        dataSource: Object
+        styleObj: {
+            type: Object,
+            default: () => ({})
+        },
+        dataSource: {
+            type: Object,
+            default: () => ({})
+        },
+        extraProps: {
+            type: Object,
+            default: () => ({})
+        },
+        extraEvents: {
+            type: Object,
+            default: () => ({})
+        },
     },
     beforeCreate() {
         this.$options.components.ZekColumnContent = require("../column-content/ColumnContent.vue").default;

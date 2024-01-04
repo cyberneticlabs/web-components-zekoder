@@ -1,6 +1,6 @@
 <template>
     <div :class="'row' + customClass" @click="$emit('onClick', $event)">
-        <ZekLoader :fullScreen="true" v-if="isLoading"/>
+        <ZekLoader :fullScreen="true" v-if="isLoading" />
         <div class="col" v-if="columns && columns.length">
             <b-table
                 :items="tableData"
@@ -13,7 +13,7 @@
                 :current-page="currentPage"
             >
                 <template v-if="caption" #table-caption>{{ caption }}</template>
-                 <!-- Show row index -->
+                <!-- Show row index -->
                 <template v-if="showRowIndex" #cell(index)="data">
                     {{ data.index + 1 }}
                 </template>
@@ -25,8 +25,8 @@
                     <b-form-checkbox v-model="data.rowSelected" class="pe-none"></b-form-checkbox>
                     <!-- Delete Item Slot, TODO: What will this bind to in the generator? -->
                     <slot name="delete" @onClick="deleteData(data.item.id)"></slot>
-                        <!-- Update Item -->
-                        <slot name="update" @onClick="updateData(data.item.id)"></slot>
+                    <!-- Update Item -->
+                    <slot name="update" @onClick="updateData(data.item.id)"></slot>
                 </template>
                 <!-- Show custom column content if component property exists-->
                 <template #cell()="data">
@@ -40,8 +40,20 @@
                 </template>
                 <!-- show delete button -->
                 <template v-if="allowDelete || allowEdit" #cell(action_button)="data">
-                    <ZekButton v-if="allowDelete" v-bind="deleteSettings.deleteButton" @onClick="deleteSettings.showConfirmation ? showDeleteModal(data.item, data.index) : deleteRow(data.item, data.index)" />
-                    <ZekButton v-if="allowEdit" v-bind="editSettings.editButton" @onClick="emitEdit(data.item, data.index)" />
+                    <ZekButton
+                        v-if="allowDelete"
+                        v-bind="deleteSettings.deleteButton"
+                        @onClick="
+                            deleteSettings.showConfirmation
+                                ? showDeleteModal(data.item, data.index)
+                                : deleteRow(data.item, data.index)
+                        "
+                    />
+                    <ZekButton
+                        v-if="allowEdit"
+                        v-bind="editSettings.editButton"
+                        @onClick="emitEdit(data.item, data.index)"
+                    />
                 </template>
             </b-table>
             <!-- Pagination -->
@@ -89,19 +101,50 @@ export default {
     name: "ZekTable",
     components: { ZekButton, ZekLoader },
     props: {
-        columns: Array, //array of object of type {Label, dataField, styleObj}
-        headerType: String, //light or dark,
-        type: [String, Array], // one or multiple of: dark, hover, striped, bordered, borderless, sm
-        caption: String,
-        data: Array,
-        showRowIndex: Boolean,
-        allowSelection: Boolean,
-        pagination: Object, //{itemsPerPage, currentPage}
+        columns: {
+            //array of object of type {Label, dataField, styleObj}
+            type: Array,
+            default: () => []
+        },
+        headerType: {
+            //light or dark,
+            type: String,
+            default: ""
+        },
+        type: {
+            // one or multiple of: dark, hover, striped, bordered, borderless, sm
+            type: [String, Array],
+            default: ""
+        },
+        caption: {
+            type: String,
+            default: ""
+        },
+        data: {
+            type: Array,
+            default: () => []
+        },
+        showRowIndex: {
+            type: Boolean,
+            default: false
+        },
+        allowSelection: {
+            type: Boolean,
+            default: false
+        },
+        pagination: {
+            //{itemsPerPage, currentPage}
+            type: Object,
+            default: () => ({})
+        },
         customClass: {
             type: String,
             default: ""
         },
-        styleObj: Object,
+        styleObj: {
+            type: Object,
+            default: () => ({})
+        },
         dataSource: {
             type: [Array, String, Object],
             required: false
@@ -127,10 +170,10 @@ export default {
                     deleteButton: {
                         label: "",
                         icon: "fas fa-trash",
-                        styleObj:{
+                        styleObj: {
                             color: "red",
                             background: "transparent",
-                            border: "none",
+                            border: "none"
                         }
                     }
                 };
@@ -149,15 +192,19 @@ export default {
                     editButton: {
                         label: "",
                         icon: "fas fa-pencil-alt",
-                        styleObj:{
+                        styleObj: {
                             color: "#2B91CD",
                             background: "transparent",
-                            border: "none",
+                            border: "none"
                         }
                     }
                 };
             }
         },
+        id: {
+            type: [String, Number],
+            default: ""
+        }
     },
     data() {
         return {
@@ -165,7 +212,7 @@ export default {
             fields: [],
             currentPage: 1,
             tableData: this.data || [],
-            currentRow: null,
+            currentRow: null
         };
     },
     created() {
@@ -173,16 +220,18 @@ export default {
         if (this.pagination && this.pagination.currentPage) {
             this.currentPage = this.pagination.currentPage;
         }
-        this.fields = this.columns ? this.columns.map(col => {
-            return {
-                key: col.dataField,
-                label: col.label,
-                sortable: col.sortable || false,
-                thStyle: col.styleObj,
-                tdClass: col.class,
-                component: col.component || null
-            };
-        }) : [];
+        this.fields = this.columns
+            ? this.columns.map(col => {
+                  return {
+                      key: col.dataField,
+                      label: col.label,
+                      sortable: col.sortable || false,
+                      thStyle: col.styleObj,
+                      tdClass: col.class,
+                      component: col.component || null
+                  };
+              })
+            : [];
         if (this.showRowIndex) {
             this.fields.unshift({
                 label: "#",
@@ -201,17 +250,17 @@ export default {
         if (this.allowDelete || this.allowEdit) {
             this.fields.push({
                 key: "action_button",
-                label:"Actions",
+                label: "Actions",
                 sortable: false,
-                isRowHeader: false,
+                isRowHeader: false
             });
         }
     },
-    watch:{
-        dataSource(){
+    watch: {
+        dataSource() {
             this.processDataSource();
         },
-        data(val){
+        data(val) {
             this.tableData = val;
         }
     },
@@ -264,12 +313,12 @@ export default {
             this.$emit("tableRowEvent", data);
         },
         showDeleteModal(row, index) {
-            this.$emit("beforeDelete", {row, index});
+            this.$emit("beforeDelete", { row, index });
             this.currentRow = row;
-            this.$refs['delete-item'].show()
+            this.$refs["delete-item"].show();
         },
         deleteRow(item, index) {
-            this.$emit("deleteRow", {row: item, index});
+            this.$emit("deleteRow", { row: item, index });
             if (this.deleteSettings) {
                 item.id ?? (item = this.currentRow);
                 let deleteUrl = `${this.dataSource.url}${this.deleteSettings.url}=${item.id}`;
@@ -294,13 +343,17 @@ export default {
             if (this.dataSource) {
                 if (typeof this.dataSource == "string") {
                     this.isLoading = true;
-                    axios.get(this.dataSource).then(response => {
-                        this.mapDataSource(response.data.data);
-                    }).catch(error => {
-                        console.log(error);
-                    }).finally(() => {
-                        this.isLoading = false;
-                    });
+                    axios
+                        .get(this.dataSource)
+                        .then(response => {
+                            this.mapDataSource(response.data.data);
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        })
+                        .finally(() => {
+                            this.isLoading = false;
+                        });
                 } else if (typeof this.dataSource == "object") {
                     this.isLoading = true;
                     axios({
@@ -308,13 +361,16 @@ export default {
                         url: this.dataSource.url,
                         data: this.dataSource.requestBody,
                         headers: this.dataSource.headers
-                    }).then(response => {
-                        this.mapDataSource(response.data.data);
-                    }).catch(error => {
-                        console.log(error);
-                    }).finally(() => {
-                        this.isLoading = false;
-                    });
+                    })
+                        .then(response => {
+                            this.mapDataSource(response.data.data);
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        })
+                        .finally(() => {
+                            this.isLoading = false;
+                        });
                 }
             }
         },
@@ -335,8 +391,8 @@ export default {
             }
         },
         emitEdit(row, index) {
-            this.$emit("editRow", {row, index});
-        },
+            this.$emit("editRow", { row, index });
+        }
     }
 };
 </script>
