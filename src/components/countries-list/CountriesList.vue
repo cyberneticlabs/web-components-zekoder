@@ -22,7 +22,11 @@ export default {
         code: {
             type: String,
             default: 'alpha3'
-        }
+        },
+        url: {
+            type: String,
+            default: 'https://cdn.jsdelivr.net/npm/world_countries_lists@latest/data/countries/en/countries.json'
+        },
     },
     data() {
         return {
@@ -30,7 +34,7 @@ export default {
         }
     },
     created() {
-        fetch('https://cdn.jsdelivr.net/npm/world_countries_lists@latest/data/countries/en/countries.json')
+        fetch(this.url)
         .then((response) => response.json())
         .then((json) => {
             this.countries = json.map((country) => {

@@ -68,7 +68,8 @@
         firebaseConfig: Object,
         url: String, //login endpoint url
         orText: String,
-        styleObj: Object
+        styleObj: Object,
+        customError:String,
     },
     data() {
         const data = {
@@ -137,13 +138,15 @@
     },
     methods:{
         login(data) {
-            this.$emit('beforeLogin');
-            if(this.webAuth) {
-                this.auth0Login(data);
-            } else if (this.fireBase) {
-                this.firebaseLogin(data);
-            } else {
-                this.defaultLogin(data);
+            this.$emit('beforeLogin', data);
+            if(!this.email?.error && !this.password?.error){
+                if(this.webAuth) {
+                    this.auth0Login(data);
+                } else if (this.fireBase) {
+                    this.firebaseLogin(data);
+                } else {
+                    this.defaultLogin(data);
+                }
             }
         },
         firebaseLogin(data) {
@@ -193,7 +196,11 @@
             })
             .catch((error) => {
                 this.$emit('onLoginError', error);
-                this.error = error && error.response && error.response.data && error.response.data.detail ? error.response.data.detail : 'There was a problem logging you in, please check your username and password. If the problem persists, please contact admin';
+                if(this.customError){
+                    this.error = this.customError
+                }else{
+                    this.error = error && error.response && error.response.data && error.response.data.detail ? error.response.data.detail : 'There was a problem logging you in, please check your username and password. If the problem persists, please contact admin';
+                }
             });
         },
         cancel() {
@@ -208,6 +215,11 @@
         onRememberMeUpdated(checked) {
             this.rememberUser = checked;
             localStorage.setItem('rememberUser', checked);
+        },
+    },
+    watch: {
+        customError(val) {
+            this.error = val;
         }
     }
   }
