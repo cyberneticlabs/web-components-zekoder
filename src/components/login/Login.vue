@@ -208,7 +208,7 @@
         onRememberMeUpdated(checked) {
             this.rememberUser = checked;
             localStorage.setItem('rememberUser', checked);
-        },
+        }
     }
   }
 </script>
