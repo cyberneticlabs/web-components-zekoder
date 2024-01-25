@@ -23,9 +23,9 @@ export default {
             type: String,
             default: 'alpha3'
         },
-        url: {
+        lang: {
             type: String,
-            default: 'https://cdn.jsdelivr.net/npm/world_countries_lists@latest/data/countries/en/countries.json'
+            default: 'en'
         },
     },
     data() {
@@ -34,7 +34,7 @@ export default {
         }
     },
     created() {
-        fetch(this.url)
+        fetch(`https://cdn.jsdelivr.net/npm/world_countries_lists@latest/data/countries/${this.lang}/countries.json`)
         .then((response) => response.json())
         .then((json) => {
             this.countries = json.map((country) => {
