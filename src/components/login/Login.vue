@@ -68,7 +68,8 @@
         firebaseConfig: Object,
         url: String, //login endpoint url
         orText: String,
-        styleObj: Object
+        styleObj: Object,
+        customError:String,
     },
     data() {
         const data = {
@@ -137,13 +138,15 @@
     },
     methods:{
         login(data) {
-            this.$emit('beforeLogin');
-            if(this.webAuth) {
-                this.auth0Login(data);
-            } else if (this.fireBase) {
-                this.firebaseLogin(data);
-            } else {
-                this.defaultLogin(data);
+            this.$emit('beforeLogin', data);
+            if(!this.email?.error && !this.password?.error){
+                if(this.webAuth) {
+                    this.auth0Login(data);
+                } else if (this.fireBase) {
+                    this.firebaseLogin(data);
+                } else {
+                    this.defaultLogin(data);
+                }
             }
         },
         firebaseLogin(data) {
@@ -157,9 +160,15 @@
             })
             .catch((error) => {
                 this.$emit('onLoginError', error);
-                const errorCode = error.code;
-                // const errorMessage = error.message;
-                this.error = errorCode;
+                this.$nextTick(() => {
+                    if(this.customError){
+                        this.error = this.customError
+                    }else{
+                        const errorCode = error.code;
+                        // const errorMessage = error.message;
+                        this.error = errorCode;
+                    }
+                })
             });
         },
         auth0Login(data){
@@ -170,7 +179,13 @@
             }, (err,dat) =>  {
                 if ( err ) {
                     this.$emit('onLoginError', err);
-                    this.error = err.description || err.error_description || 'There was an error. Please try again';
+                    this.$nextTick(() => {
+                        if(this.customError){
+                            this.error = this.customError
+                        }else{
+                            this.error = err.description || err.error_description || 'There was an error. Please try again';
+                        }
+                    })
                 } else if ( dat ) {
                     this.$emit('onLoginSuccess', dat);
                     this.error = '';
@@ -193,7 +208,13 @@
             })
             .catch((error) => {
                 this.$emit('onLoginError', error);
-                this.error = error && error.response && error.response.data && error.response.data.detail ? error.response.data.detail : 'There was a problem logging you in, please check your username and password. If the problem persists, please contact admin';
+                this.$nextTick(() => {
+                    if(this.customError){
+                        this.error = this.customError
+                    }else{
+                        this.error = error && error.response && error.response.data && error.response.data.detail ? error.response.data.detail : 'There was a problem logging you in, please check your username and password. If the problem persists, please contact admin';
+                    }
+                })
             });
         },
         cancel() {
