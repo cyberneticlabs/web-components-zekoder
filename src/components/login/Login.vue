@@ -160,9 +160,15 @@
             })
             .catch((error) => {
                 this.$emit('onLoginError', error);
-                const errorCode = error.code;
-                // const errorMessage = error.message;
-                this.error = errorCode;
+                this.$nextTick(() => {
+                    if(this.customError){
+                        this.error = this.customError
+                    }else{
+                        const errorCode = error.code;
+                        // const errorMessage = error.message;
+                        this.error = errorCode;
+                    }
+                })
             });
         },
         auth0Login(data){
@@ -173,7 +179,13 @@
             }, (err,dat) =>  {
                 if ( err ) {
                     this.$emit('onLoginError', err);
-                    this.error = err.description || err.error_description || 'There was an error. Please try again';
+                    this.$nextTick(() => {
+                        if(this.customError){
+                            this.error = this.customError
+                        }else{
+                            this.error = err.description || err.error_description || 'There was an error. Please try again';
+                        }
+                    })
                 } else if ( dat ) {
                     this.$emit('onLoginSuccess', dat);
                     this.error = '';
