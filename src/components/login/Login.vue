@@ -196,11 +196,13 @@
             })
             .catch((error) => {
                 this.$emit('onLoginError', error);
-                if(this.customError){
-                    this.error = this.customError
-                }else{
-                    this.error = error && error.response && error.response.data && error.response.data.detail ? error.response.data.detail : 'There was a problem logging you in, please check your username and password. If the problem persists, please contact admin';
-                }
+                this.$nextTick(() => {
+                    if(this.customError){
+                        this.error = this.customError
+                    }else{
+                        this.error = error && error.response && error.response.data && error.response.data.detail ? error.response.data.detail : 'There was a problem logging you in, please check your username and password. If the problem persists, please contact admin';
+                    }
+                })
             });
         },
         cancel() {
@@ -216,11 +218,6 @@
             this.rememberUser = checked;
             localStorage.setItem('rememberUser', checked);
         },
-    },
-    watch: {
-        customError(val) {
-            this.error = val;
-        }
     }
   }
 </script>
