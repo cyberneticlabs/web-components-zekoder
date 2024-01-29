@@ -54,6 +54,7 @@
                     <label class="form-check-label pe-none" for="flexCheckDefault">
                         {{ item.text || item }}
                     </label>
+                    <p class="item-description" v-if="item?.description ">{{ item.description }}</p>
                     <i v-if="item.icon" :class="item.icon"></i>
                 </li>
             </ul>
@@ -112,6 +113,7 @@
                         :value="item.value ? item.value : item"
                     />
                     {{ item.text || item }}
+                    <p class="item-description" v-if="item?.description ">{{ item.description }}</p>
                 </div>
             </div>
         </div>
@@ -331,5 +333,11 @@ export default {
   color: #999;
   cursor: pointer;
   height: 100%;
+}
+.item-description{
+    font-size: 13px;
+    display: block;
+    white-space: pre-wrap;
+    cursor: default;
 }
 </style>
