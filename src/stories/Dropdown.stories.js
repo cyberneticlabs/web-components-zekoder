@@ -53,7 +53,7 @@ const Template = (args, { argTypes }) => ({
     components: { 'zek-dropdown': Dropdown },
     props: Object.keys(argTypes),
     methods: { action },
-    template: `<zek-dropdown @onToggle="action('Toggled')($event)" @onSelect="action('Selected')($event)" v-bind="$props"></zek-dropdown>`,
+    template: `<zek-dropdown @onToggle="action('Toggled')($event)" @onSelect="action('Selected')($event)" @onAddItem="action('Added')($event)" v-bind="$props"></zek-dropdown>`,
 });
 
 export const Primary = Template.bind({});
@@ -62,17 +62,21 @@ Primary.args = {
     showCheckBox: true,
     label: 'Dropdown',
     items: [
+        //  "1", "2", "3"
         {
         text: '1',
-        value: "1d"
+        value: "1d",
+        icon: 'far fa-thumbs-up iconColor'
         },
         {
         text: '2',
-        value: "2d"
+        value: "2d",
+        icon: 'far fa-thumbs-up iconColor'
         },
         {
         text: '3',
-        value: "3d"
+        value: "3d",
+        icon: 'far fa-thumbs-up iconColor'
         },
     ],
     selectType: 'Single',
