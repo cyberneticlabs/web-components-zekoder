@@ -339,5 +339,8 @@ export default {
     display: block;
     white-space: pre-wrap;
     cursor: default;
+    margin: 0 8px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 </style>
