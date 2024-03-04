@@ -52,7 +52,7 @@
                     :total-rows="tableData.length"
                     :per-page="pagination.itemsPerPage"
                     align="right"
-                    @change="$emit('onChange', $event)"
+                    @change="$emit('onPaginate', $event)"
                 ></b-pagination>
             </div>
         </div>

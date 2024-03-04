@@ -24,7 +24,7 @@ export default {
     components: { ZekTable },
     props: Object.keys(argTypes),
     // And then the `args` are bound to your component with `v-bind="args"`
-    template: '<zek-table v-bind="$props" @rowsSelected="logSelection($event)" @onChange="pageNumber($event)"></zek-table>',
+    template: '<zek-table v-bind="$props" @rowsSelected="logSelection($event)" @onPaginate="pageNumber($event)"></zek-table>',
     methods: {
         logSelection(sel){
             console.log(sel);
