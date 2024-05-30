@@ -10,7 +10,7 @@ export default {
           control: 'select',
           options: ['material', 'bootstrap', 'custom']
         },
-        
+
       },
   };
 
@@ -26,5 +26,11 @@ export default {
   export const Primary = Template.bind({});
 // More on args: https://storybook.js.org/docs/vue/writing-stories/args
 Primary.args = {
-  
+};
+  export const WithRedirect = Template.bind({});
+// More on args: https://storybook.js.org/docs/vue/writing-stories/args
+WithRedirect.args = {
+  url: 'https://auth.dev.zekoder.net/login',
+  redirectUrl: 'https://dev.zekoder.net/auth/verifysociallogin',
+  callbackUrl: 'https://auth.dev.zekoder.net/login_callback',
 };

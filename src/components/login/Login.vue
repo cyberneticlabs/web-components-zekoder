@@ -57,6 +57,8 @@
         customClass: String,
         email: Object,
         password: Object,
+        redirectUrl: String,
+        callbackUrl: String,
         showForgotLink: Boolean,
         showRememberMe: Boolean,
         rememberMe: Object,
@@ -138,6 +140,9 @@
     },
     methods:{
         login(data) {
+            if (this.redirectUrl) {
+                data['redirect_url'] = this.redirectUrl;
+            }
             this.$emit('beforeLogin', data);
             if(!this.email?.error && !this.password?.error){
                 if(this.webAuth) {
@@ -199,6 +204,11 @@
                 data
             })
             .then((res) => {
+                if (this.redirectUrl) {
+                    const callbackUrl = this.callbackUrl ?? `${this.url}_callback`;
+                    window.location.href = callbackUrl + '?login_temp_code=' + res.data.login_temp_code;
+                    return;
+                }
                 localStorage.setItem('userInfo', JSON.stringify(res.data.user));
                 localStorage.setItem('accessToken', res.data.accessToken);
                 localStorage.setItem('refreshToken', res.data.refreshToken);
