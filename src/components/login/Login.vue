@@ -209,10 +209,15 @@
                     window.location.href = callbackUrl + '?login_temp_code=' + res.data.login_temp_code;
                     return;
                 }
-                localStorage.setItem('userInfo', JSON.stringify(res.data.user));
-                localStorage.setItem('accessToken', res.data.accessToken);
-                localStorage.setItem('refreshToken', res.data.refreshToken);
-                localStorage.setItem('expirationTime', res.data.expirationTime);
+                const {user, accessToken, refreshToken, expirationTime} = res.data;
+                if (!accessToken || !refreshToken || !expirationTime) {
+                    this.error = 'There was a problem logging you in, please check your username and password. If the problem persists, please contact admin';
+                    throw new Error('Invalid response from server');
+                }
+                localStorage.setItem('userInfo', JSON.stringify(user));
+                localStorage.setItem('accessToken', accessToken);
+                localStorage.setItem('refreshToken', refreshToken);
+                localStorage.setItem('expirationTime', expirationTime);
                 this.error = '';
                 this.$emit('onLoginSuccess', res.data);
             })
