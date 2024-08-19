@@ -1,14 +1,24 @@
 <template>
     <div :class="`zek-rich-editor-container ${customClass}`" :style="styleObj">
-        <vue2-tinymce-editor
+        <editor
             class="zek-rich-editor"
             v-model="value"
-            :options="config"
+            :init="config"
+            :inline="inline"
+            :plugins="config.plugins || ''"
             :height="height"
             :width="width"
+            :output-format="config.outputFormat || 'html'"
+            :tag-name="config.tagName || 'div'"
+            :toolbar="toolbar"
+            :disabled="disabled"
+            :style="{ height: height, width: width }"
+            :initial-value="initialValue"
+            api-key="e0et1nvx8siq63nqfxsannuye6uvep23o1at9h1tc8j5e7sr"
+            model-events="change keydown blur focus paste"
             ref="tiny"
-            @editorInit="editorInit"
-            @editorChange="textChange"
+            @init="editorInit"
+            @change="textChange"
             v-bind="{...extraProps}"
             v-on="{...extraEvents}"
         />
@@ -16,11 +26,11 @@
 </template>
 
 <script>
-import { Vue2TinymceEditor } from "vue2-tinymce-editor";  // https://www.npmjs.com/package/vue2-tinymce-editor
+import Editor from '@tinymce/tinymce-vue'
 export default {
     name: "ZekRichTextEditor",
     components: {
-        Vue2TinymceEditor
+        editor: Editor
     },
     props: {
         customClass: {
@@ -32,11 +42,11 @@ export default {
             required: false
         },
         width: {
-            type: Number,
+            type: String,
             required: false
         },
         height: {
-            type: Number,
+            type: String,
             required: false
         },
         initialValue: {
@@ -74,6 +84,10 @@ export default {
             type: Object,
             required: false,
             default: () => ({})
+        },
+        inline: {
+            type: Boolean,
+            default: false
         }
     },
     data() {
@@ -90,9 +104,11 @@ export default {
     },
     methods: {
         editorInit(e) {
+            console.log(e, 'init')
             this.$emit("onInit", e);
         },
-        textChange(e) {
+        textChange(e, editor) {
+            console.log(e, editor)
             this.$emit("onChange", this.value);
         }
     },
