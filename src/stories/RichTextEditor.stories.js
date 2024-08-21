@@ -15,7 +15,9 @@ const Template = (args, { argTypes }) => ({
 
 export const Primary = Template.bind({});
 Primary.args = {
-//   toolbar: "",
+  styleObj: {
+    border: "1px solid #ccc",
+  },
   initialValue: `
     <!DOCTYPE html>
 <html lang="" xml:lang="" xmlns="http://www.w3.org/1999/xhtml">
@@ -25,14 +27,12 @@ Primary.args = {
   </title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
   <style type="text/css">
-   <!--
-    p {margin: 0; padding: 0;} .ft30{font-size:18px;font-family:QMJCQX+UniversCondensed;color:#000000;}
+    p {margin: 0; padding: 0;} .ft30{color: red;font-size:18px;font-family:QMJCQX+UniversCondensed;color:#000000;}
     .ft31{font-size:18px;font-family:DQBGRC+Humanist521BT-Roman;color:#000000;}
-    .ft32{font-size:15px;font-family:EUFIEV+Humanist777BT-BlackB;color:#ffffff;}
+    .ft32{font-size:15px;font-family:EUFIEV+Humanist777BT-BlackB;color:#ffff00;}
     .ft33{font-size:30px;font-family:LHWYYH+Humanist777BT-BlackB;color:#e62d2b;}
     .ft34{font-size:18px;font-family:SCGOST+FuturaBT-Light;color:#000000;}
     .ft35{font-size:18px;line-height:21px;font-family:SCGOST+FuturaBT-Light;color:#000000;}
--->
   </style>
  </head>
  <body bgcolor="#A0A0A0" link="blue" style="margin: 0; padding:0 ;background-color: white" vlink="blue">
@@ -81,7 +81,7 @@ Primary.args = {
  </body>
 </html>
 `,
-    inline: true,
+    inline: false,
 };
 
 export const Secondary = Template.bind({});
