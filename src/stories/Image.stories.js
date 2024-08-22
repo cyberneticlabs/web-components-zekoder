@@ -75,3 +75,11 @@ Primary.args = {
         textDecoration: "underline",
     },
 };
+
+export const Secure = Template.bind({});
+Secure.args = {
+    url: "https://files.dev.zekoder.net/asset/e5b13400-608d-11ef-80c8-d7745ee42276",
+    secure: true,
+    width: "200px",
+    // accessToken: "Bearer " + localStorage.getItem("accessToken") // Custom token
+}
