@@ -1,28 +1,42 @@
 <template>
     <div :class="`zek-rich-editor-container ${customClass}`" :style="styleObj">
-        <vue2-tinymce-editor
-            class="zek-rich-editor"
+        <Editor
+            :key="`editor-${resetKey}`"
+            :api-key="apiKey"
+            :init="{...config, 'content_style': inlineClasses}"
             v-model="value"
-            :options="config"
-            :height="height"
-            :width="width"
-            ref="tiny"
-            @editorInit="editorInit"
-            @editorChange="textChange"
-            v-bind="{...extraProps}"
-            v-on="{...extraEvents}"
+            :inline="inline"
+            :plugins="options"
+            :toolbar="toolbar"
+            :disabled="disabled"
+            :initialValue="initialValue"
+            @onInit="editorInit"
+            @onChange="textChange"
+            v-bind="extraProps"
+            v-on="extraEvents || {}"
         />
     </div>
 </template>
 
 <script>
-import { Vue2TinymceEditor } from "vue2-tinymce-editor";  // https://www.npmjs.com/package/vue2-tinymce-editor
+// For Config options: https://www.npmjs.com/package/@tinymce/tinymce-vue/v/3.2.8?activeTab=code
+import Editor from '@tinymce/tinymce-vue'
 export default {
     name: "ZekRichTextEditor",
     components: {
-        Vue2TinymceEditor
+        Editor
     },
     props: {
+        menu: {
+            type: Object,
+            required: false,
+            default: () => ({})
+        },
+        menubar: {
+            type: String,
+            required: false,
+            default: ""
+        },
         customClass: {
             type: String,
             required: false
@@ -32,11 +46,11 @@ export default {
             required: false
         },
         width: {
-            type: Number,
+            type: String,
             required: false
         },
         height: {
-            type: Number,
+            type: String,
             required: false
         },
         initialValue: {
@@ -55,15 +69,11 @@ export default {
             // Available toolbars: https://www.tiny.cloud/docs/advanced/available-toolbar-buttons/
         },
         options: {
-            type: Object,
+            type: [String, Array],
             required: false,
-            default: () => ({})
-            // https://www.tiny.cloud/docs/quick-start/
-            // Available plugins
-            // 'advlist autolink charmap code codesample directionality emoticons ' +
-            // 'fullscreen help hr image imagetools insertdatetime link lists ' +
-            // 'media nonbreaking pagebreak paste preview print save searchreplace ' +
-            // 'table template textpattern toc visualblocks visualchars wordcount',
+            default: () => ([
+                'advlist autolink autoresize autosave bbcode charmap code codesample directionality emoticons fullpage fullscreen help hr image imagetools importcss insertdatetime legacyoutput link lists media nonbreaking noneditable pagebreak paste preview print quickbars save searchreplace spellchecker tabfocus table template textpattern toc visualblocks visualchars wordcount'
+            ])
         },
         extraProps: {
             type: Object,
@@ -74,13 +84,23 @@ export default {
             type: Object,
             required: false,
             default: () => ({})
+        },
+        inline: {
+            type: Boolean,
+            default: false
         }
     },
     data() {
         return {
+            resetKey: 0,
+            apiKey: "e0et1nvx8siq63nqfxsannuye6uvep23o1at9h1tc8j5e7sr",
             value: this.initialValue || "",
+            inlineClasses: "",
             config: {
-                menubar: false,
+                height: this.height,
+                width: this.width,
+                menu: this.menu,
+                menubar: this.menubar,
                 toolbar: this.toolbar,
                 readonly: this.disabled,
                 resize: false,
@@ -89,11 +109,18 @@ export default {
         };
     },
     methods: {
-        editorInit(e) {
-            this.$emit("onInit", e);
+        editorInit(e, editor) {
+            this.$emit("onInit", e, editor);
         },
-        textChange(e) {
+        textChange(e, editor) {
             this.$emit("onChange", this.value);
+        },
+        getInlineClasses(val) {
+            const inlineClasses = val.match(/<style[^>]*>([\s\S]*?)<\/style>/)?.[1].replaceAll("<br />", "").trim() || '';
+            if (this.inlineClasses != inlineClasses) {
+                this.inlineClasses = inlineClasses;
+                this.resetKey++;
+            }
         }
     },
     watch: {
@@ -106,6 +133,13 @@ export default {
         disabled: {
             handler: function(val) {
                 this.$refs.tiny?.editor?.setMode(val ? "readonly" : "design");
+            },
+            immediate: true
+        },
+        value: {
+            handler: function(val) {
+                this.getInlineClasses(val);
+                this.$emit("input", val);
             },
             immediate: true
         }

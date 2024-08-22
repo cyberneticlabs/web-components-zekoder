@@ -152,6 +152,26 @@ Primary.args = {
             },
         ]
 
+    },
+    {
+        name: 'logo',
+        type: 'file-upload',
+        secure: true,
+        fetchUrl: "https://files.dev.zekoder.net/asset",
+        uploadUrl: "https://files.dev.zekoder.net/file",
+        width: '200px',
+        height: '200px',
+        placeholder: "<span class='p-2'>Upload</span><i class='fa fa-upload'></i>",
+        stylePanelLayout: "compact",
+        label: "Upload Logo",
+        initialValue: "e5b13400-608d-11ef-80c8-d7745ee42276",
+        allowImagePreview: true,
+        inputStyle: {
+            "background-color": "lightgreen",
+            "border": "1px solid black",
+            "border-radius": "50%",
+            "margin": "0 10px",
+        },
     }
   ],
   submitButton: 'Proceed', //for string it is button label, for object it should be {show:true, label:'Submit', styleObj: {}}

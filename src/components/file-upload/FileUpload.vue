@@ -35,7 +35,7 @@
 
 <script>
 import * as axios from 'axios';
- import vueFilePond from 'vue-filepond';
+import vueFilePond from 'vue-filepond';
 
 import 'filepond/dist/filepond.min.css';
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css';
@@ -71,6 +71,8 @@ export default {
         multiple: Boolean,
         dragDrop: Boolean,
         uploadUrl: String,
+        secure: Boolean,
+        accessToken: String,
         fetchUrl: {
             type: String,
             default: ""
@@ -132,16 +134,67 @@ export default {
         allowImagePreview: {
             type: Boolean,
             default: () => false
+        },
+        initialValue: {
+            type: String,
+            default: ""
+        }
+    },
+    async created() {
+        const files = [...this.files];
+        if (this.initialValue) {
+            files.push(this.initialValue);
+        }
+        if (files && files.length) {
+            if (this.secure) {
+                for (let file of files) {
+                    // if file is not link add fetchUrl to it
+                    if (file.indexOf('http') === -1) {
+                        if (!this.fetchUrl) {
+                            console.error('fetchUrl is required for secure file upload');
+                            return;
+                        }
+                        file = this.fetchUrl + '/' + file;
+                    }
+                    this.preloadedFiles.push(await this.getSecureImage(file));
+                }
+            } else {
+                this.preloadedFiles = files;
+            }
         }
     },
     data() {
         return {
             loading: false,
-            preloadedFiles: this.files,
+            preloadedFiles: [],
             fileIds: this.existingIds
         }
     },
     methods: {
+        async getSecureImage(image) {
+            this.loading = true;
+            return await axios({
+                method: 'get',
+                url: image,
+                headers: {
+                    'Authorization': this.accessToken ? this.accessToken : `Bearer ${localStorage.getItem('accessToken')}`
+                },
+                responseType: 'blob'
+            }).then(res => {
+                return {
+                    source: image,
+                    options: {
+                        type: 'local',
+                        file: new File([res.data], image.split('/').pop(), { type: res.data.type }),
+                        metadata: {
+                            fileType: res.data.type
+                        }
+                    }
+                }
+            }).catch(err => {
+                console.error(err);
+            });
+        },
         onClick($event) {
             this.$emit('onClick', $event);
         },
@@ -152,7 +205,7 @@ export default {
 
             // if same file as preloaded file, do nothing (only for single file upload)
             if ( !this.multiple && this.preloadedFiles && this.preloadedFiles.length ) {
-                const preloadedFile = this.preloadedFiles.find(file => file === fileObject.file.name || file === fileObject.source);
+                const preloadedFile = this.preloadedFiles.find(file => file.source.split('/').pop() === fileObject.file.name);
                 if ( preloadedFile ) {
                     return;
                 }
@@ -172,10 +225,15 @@ export default {
             } else {
                 let formData = new FormData();
                 formData.append('file', file);
+                const headers = {};
+                if ( this.secure ) {
+                    headers['Authorization'] = this.accessToken ? this.accessToken : `Bearer ${localStorage.getItem('accessToken')}`;
+                }
                 axios({
                     method: 'post',
                     url: this.uploadUrl,
-                    data: formData
+                    data: formData,
+                    headers: headers
                 }).then(res => {
                     if ( res && res.data && res.data[this.dataKey] ) {
                         if ( this.multiple ) {

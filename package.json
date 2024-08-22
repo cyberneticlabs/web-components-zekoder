@@ -29,6 +29,7 @@
     "@apollo/client": "^3.5.6",
     "@socheatsok78/storybook-addon-vuetify": "^0.1.9",
     "@storybook/addon-postcss": "^2.0.0",
+    "@tinymce/tinymce-vue": "^3.2.8",
     "@vimeo/player": "^2.16.3",
     "apexcharts": "^3.33.2",
     "auth0-js": "^9.19.0",
@@ -57,8 +58,7 @@
     "vue-router": "^3.5.3",
     "vue-scroll-picker": "^0.8.2",
     "vue-slick-carousel": "^1.0.6",
-    "vue2-ace-editor": "^0.0.15",
-    "vue2-tinymce-editor": "^0.0.1"
+    "vue2-ace-editor": "^0.0.15"
   },
   "devDependencies": {
     "@babel/core": "^7.17.2",
