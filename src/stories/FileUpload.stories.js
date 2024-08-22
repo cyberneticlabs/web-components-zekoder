@@ -20,11 +20,13 @@ export default {
   export const Primary = Template.bind({});
 // More on args: https://storybook.js.org/docs/vue/writing-stories/args
 Primary.args = {
+    secure: true,
+    files: ['https://files.dev.zekoder.net/asset/e5b13400-608d-11ef-80c8-d7745ee42276'],
     label: "Upload Image",
-    uploadUrl: "https://zecommons.dev.zekoder.net/image?thumbnail_width=200&thumbnail_height=200&file_name=image1&file_description=testing-upload",
+    uploadUrl: "https://files.dev.zekoder.net/file",
     placeholder: "<span class='p-2'>Upload</span><i class='fa fa-upload'></i>",
-    width: "100px",
-    height: "100px",
+    width: "200px",
+    height: "200px",
     stylePanelLayout: "compact circle", // using inputStyle give more control
     extraProps: {
         stylePanelShowRemoveButton: false,
@@ -39,7 +41,7 @@ Primary.args = {
         alignItems: "center",
     },
     inputStyle: {
-        "background-color": "red",
+        "background-color": "lightgreen",
         "border": "1px solid black",
         "border-radius": "50%",
         "margin": "0 10px",
@@ -50,12 +52,12 @@ Primary.args = {
             "background-color": "red",
             "color": "white",
             "border": "1px solid black",
-            "border-radius": "10px",
+            "border-radius": "5px",
             "padding": "5px 10px",
             "margin": "10px",
-            height: "30px",
+            height: "40px",
         },
     },
-    acceptedFileTypes: ["application/pdf"],
-    allowImagePreview: false
+    acceptedFileTypes: ["application/pdf", "image/*"],
+    allowImagePreview: true
 };
