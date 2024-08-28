@@ -8,6 +8,7 @@
         <file-pond
             name="file-upload"
             ref="pond"
+            :key="preloadedFiles.length"
             :accepted-file-types="acceptedFileTypes"
             :label-idle="placeholder"
             :allowMultiple="multiple"
@@ -141,7 +142,7 @@ export default {
         }
     },
     async created() {
-        const files = [...this.files];
+        const files = this.files?.length ? [...this.files] : [];
         if (this.initialValue) {
             files.push(this.initialValue);
         }
@@ -154,7 +155,7 @@ export default {
                             console.error('fetchUrl is required for secure file upload');
                             return;
                         }
-                        file = this.fetchUrl + '/' + file;
+                        file = this.fetchUrl + file;
                     }
                     this.preloadedFiles.push(await this.getSecureImage(file));
                 }
