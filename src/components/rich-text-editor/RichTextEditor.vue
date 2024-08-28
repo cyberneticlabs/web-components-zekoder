@@ -2,7 +2,6 @@
     <div :class="`zek-rich-editor-container ${customClass}`" :style="styleObj">
         <Editor
             :key="`editor-${resetKey}`"
-            :api-key="apiKey"
             :init="{...config, 'content_style': inlineClasses}"
             v-model="value"
             :inline="inline"
@@ -10,6 +9,7 @@
             :toolbar="toolbar"
             :disabled="disabled"
             :initialValue="initialValue"
+            :tinymceScriptSrc="tinymceScriptSrc"
             @onInit="editorInit"
             @onChange="textChange"
             v-bind="extraProps"
@@ -98,6 +98,7 @@ export default {
     data() {
         return {
             resetKey: 0,
+            tinymceScriptSrc: 'https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.10.9/tinymce.min.js',
             value: this.initialValue || "",
             inlineClasses: "",
             config: {
