@@ -33,11 +33,7 @@ export default {
         },
         styleObj: {
             type: Object,
-            default: ()=>{return{
-                color: 'black',
-                border: '2px solid black',
-                padding: '5px 10px'
-            }}
+            default: ()=> ({})
         },
         label: {
             type: String,

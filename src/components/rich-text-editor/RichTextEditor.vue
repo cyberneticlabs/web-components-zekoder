@@ -27,6 +27,11 @@ export default {
         Editor
     },
     props: {
+        apiKey: {
+            type: String,
+            required: false,
+            default: "e0et1nvx8siq63nqfxsannuye6uvep23o1at9h1tc8j5e7sr"
+        },
         menu: {
             type: Object,
             required: false,
@@ -93,7 +98,6 @@ export default {
     data() {
         return {
             resetKey: 0,
-            apiKey: "e0et1nvx8siq63nqfxsannuye6uvep23o1at9h1tc8j5e7sr",
             value: this.initialValue || "",
             inlineClasses: "",
             config: {
